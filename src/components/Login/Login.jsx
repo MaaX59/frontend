@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import {Link} from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,7 +48,12 @@ const Login = () => {
             </div>
             <div className="group relative w-full h-[40px] flex justify-center rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-transparent font-medium text-sm">
                 <button>Log In</button>
-
+            </div>
+            <div className =" flex w-full">
+              <h4> Not have any account?</h4>
+              <Link to ="/signup" className="text-blue-600 pl-2">
+               Sign Up
+              </Link>
             </div>
           </form>
         </div>
