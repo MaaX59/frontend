@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 
-const Signup = () => {
+const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -11,6 +11,23 @@ const Signup = () => {
 //   const handleSubmit = () => {
 //     console.log("ffff");
 //   };
+
+const handleSubmit = (e) => { 
+  e.preventDefault();
+  const newUser= {
+    email, 
+    name, 
+    password, 
+    avatar
+  };
+  props.Signup(newUser);
+
+  setEmail("");
+  setName("");
+  setPassword("");
+  setAvatar(null);
+
+}
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -26,7 +43,7 @@ const Signup = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <lable className="block text-sm font-medium text-gray-700">
                 Full Name
