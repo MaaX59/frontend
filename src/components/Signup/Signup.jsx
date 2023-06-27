@@ -1,6 +1,9 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
+import axios from "axios";
+import { server } from "../../server";
+
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -8,16 +11,37 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
 
-//   const handleSubmit = () => {
-//     console.log("ffff");
-//   };
-
+  
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
   };
 
-  return (
+ 
+
+    const handleSubmit = (e) => { 
+      e.preventDefault();
+      const newUser= {
+        email, 
+        name, 
+        password, 
+      };
+      console.log(newUser);
+      axios.post(`${server}/user/signup`, newUser).then((res) =>{
+        console.log(res)
+      })
+      .catch((err) =>{
+        console.log(err);
+      })
+    
+      setEmail("");
+      setName("");
+      setPassword("");
+      setAvatar(null);
+    
+    }
+    
+   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -26,11 +50,11 @@ const Signup = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <lable className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Full Name
-              </lable>
+              </label>
               <div className="mt-1">
                 <input
                   type="text"
@@ -44,9 +68,9 @@ const Signup = () => {
               </div>
             </div>
             <div>
-              <lable className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Enter Your Email
-              </lable>
+              </label>
               <div className="mt-1">
                 <input
                   type="email"
@@ -60,9 +84,9 @@ const Signup = () => {
               </div>
             </div>
             <div>
-              <lable className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Enter Your Password
-              </lable>
+              </label>
               <div className="mt-1">
                 <input
                   type="password"

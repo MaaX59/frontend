@@ -15,9 +15,9 @@ const Login = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6">
             <div>
-              <lable className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Enter Your Email
-              </lable>
+              </label>
               <div className="mt-1">
                 <input
                   type="email"
@@ -31,9 +31,9 @@ const Login = () => {
               </div>
             </div>
             <div>
-              <lable className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700">
                 Enter Your Password
-              </lable>
+              </label>
               <div className="mt-1">
                 <input
                   type="password"
