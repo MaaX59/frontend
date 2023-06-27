@@ -17,9 +17,7 @@ const Signup = ({props}) => {
     setAvatar(file);
   };
 
- 
-
-    const handleSubmit = (e) => { 
+ const handleSubmit = (e) => { 
       e.preventDefault();
       const newUser= {
         email, 
