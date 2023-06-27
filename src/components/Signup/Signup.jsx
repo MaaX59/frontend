@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 
-const Signup = (props) => {
+const Signup = ({props}) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +20,7 @@ const handleSubmit = (e) => {
     password, 
     avatar
   };
-  console.log(newUser);
+  console.log("info from form", newUser);
 
   setEmail("");
   setName("");
