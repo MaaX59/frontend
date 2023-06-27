@@ -5,7 +5,7 @@ import axios from "axios";
 import { server } from "../../server";
 
 
-const Signup = () => {
+const Signup = ({props}) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
