@@ -20,7 +20,7 @@ const handleSubmit = (e) => {
     password, 
     avatar
   };
-  props.Signup(newUser);
+  props.signup(newUser);
 
   setEmail("");
   setName("");
