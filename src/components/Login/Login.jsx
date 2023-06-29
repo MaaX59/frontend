@@ -6,15 +6,24 @@ import { server } from "../../server";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const handleSubmit = (e) => { 
     e.preventDefault();
     const loginInfo= {
       email, 
       password, 
     };
+    console.log("login from frontend", loginInfo);
 
-    axios.post(`${server}/user/signup`, loginInfo);
+    axios.post(`${server}/user/login`, loginInfo).then((res) =>{
+      console.log(res)
+    })
+    .catch((err) =>{
+      console.log(err);
+    })
+  
+    setEmail("");
+    setPassword("");;
   }
 
   return (
