@@ -11,13 +11,17 @@ function Navbar() {
             <span className="text-white font-bold text-lg">Logo</span>
           </div>
           <div className="flex">
+          <Link to="/"
+              className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+            >
+            Home
+            </Link>
             <Link to="/signup"
               className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               SignUp
             </Link>
             <Link to="/login"
-              href="#"
               className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               Login 
