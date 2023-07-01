@@ -9,7 +9,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
- const {setToken, authenticateUser } = useContext(AuthContext)
+ const {setToken, authenticateUser , setIsLoggedIn} = useContext(AuthContext);
+ 
  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -24,6 +25,7 @@ const Login = () => {
       const actualToken = data.authToken;
       setToken(actualToken);
       authenticateUser();
+      setIsLoggedIn(true);
       navigate("/profile");
     } catch (error) {
       setErrorMessage(error.response.data.message);

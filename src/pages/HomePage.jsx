@@ -16,7 +16,8 @@ function HomePage() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${server}/product/allproducts`);
-      setProducts(response.data);
+      setProducts(response.data.data);
+      console.log("this is the product list", response.data.data)
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -29,8 +30,8 @@ function HomePage() {
     <h1>Welcome to the Homepage</h1>
     {Array.isArray(products) && products.length > 0 ? (
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>{product.name}</li>
+        {products.map((Product) => (
+          <li key={Product._id}>{Product.name}</li>
         ))}
       </ul>
     ) : (
