@@ -16,13 +16,18 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup" element={ <SignupPage /> } />
 
-        <Route path="/profile" element={<PrivatePage><ProfilePage /></PrivatePage>} />
-
+        <Route
+          path="/profile"
+          element={
+            <PrivatePage>
+              <ProfilePage />
+            </PrivatePage>
+          }
+        />
 
         <Route path="/create-product" element={<CreateProductPage />} />
-
       </Routes>
     </BrowserRouter>
   );

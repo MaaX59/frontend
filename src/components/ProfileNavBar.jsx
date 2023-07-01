@@ -16,6 +16,14 @@ function ProfileNavBar() {
               >
               Home
               </Link>
+
+              <Link to="/create-product"
+                className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+              
+              >
+                Create an item to sell
+              </Link>
+
               <Link to="/login"
                 className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
               onClick ={logOutUser}

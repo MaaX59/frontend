@@ -1,6 +1,7 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import axios from "axios";
 import { server } from "../../server";
+import { AuthContext } from "../../context/auth.context";
 // import { AiFillFileImage } from "react-icons/ai";
 
 const CreateProduct = () => {
@@ -15,6 +16,12 @@ const CreateProduct = () => {
   // const [numberOfReviews, setNumberOfReviews] = useState("");
   // const [review, setReview] = useState([]);
 
+  const { isLoading, isLoggedIn } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+
+  // console.log(user.email)
+  // const userEmail = user.email;
+
   const handleImageChange = (e) => {
     e.preventDefault();
     let image = Array.from(e.target.files);
@@ -23,18 +30,20 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     const createdProduct = {
       name,
       price,
       description,
       image,
-      seller,
+      seller:user.email,
       stock,
       category,
       // numberOfReviews,
       // ratings,
       // review
     };
+    
     console.log("product from frontend", createdProduct);
 
     axios

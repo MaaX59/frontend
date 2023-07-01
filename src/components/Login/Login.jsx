@@ -1,26 +1,22 @@
 import { React, useState, useContext } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { AuthContext } from "../../context/auth.context";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
- const {setToken, authenticateUser , setIsLoggedIn} = useContext(AuthContext);
- 
- const navigate = useNavigate()
+  const { setToken, authenticateUser, setIsLoggedIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const userToLogin = { email, password };
-      const {data} = await axios.post(
-        `${server}/user/login`,
-        userToLogin
-      );
+      const { data } = await axios.post(`${server}/user/login`, userToLogin);
       console.log("JWT Token", data.authToken);
       const actualToken = data.authToken;
       setToken(actualToken);
@@ -30,11 +26,10 @@ const Login = () => {
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }
-  
+
     setEmail("");
     setPassword("");
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -79,12 +74,12 @@ const Login = () => {
               </div>
             </div>
             <div className="group relative w-full h-[40px] flex justify-center rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-transparent font-medium text-sm">
-                <button type="submit">Log In</button>
+              <button type="submit">Log In</button>
             </div>
-            <div className =" flex w-full">
+            <div className=" flex w-full">
               <h4> Not have any account?</h4>
-              <Link to ="/signup" className="text-blue-600 pl-2">
-               Sign Up
+              <Link to="/signup" className="text-blue-600 pl-2">
+                Sign Up
               </Link>
             </div>
           </form>
@@ -95,5 +90,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
