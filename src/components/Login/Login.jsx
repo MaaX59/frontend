@@ -1,9 +1,31 @@
 import { React, useState } from "react";
 import {Link} from "react-router-dom";
+import axios from "axios";
+import { server } from "../../server";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => { 
+    e.preventDefault();
+    const loginInfo= {
+      email, 
+      password, 
+    };
+    console.log("login from frontend", loginInfo);
+
+    axios.post(`${server}/user/login`, loginInfo).then((res) =>{
+      console.log(res)
+    })
+    .catch((err) =>{
+      console.log(err);
+    })
+  
+    setEmail("");
+    setPassword("");;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -13,7 +35,7 @@ const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Enter Your Email
@@ -47,7 +69,7 @@ const Login = () => {
               </div>
             </div>
             <div className="group relative w-full h-[40px] flex justify-center rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-transparent font-medium text-sm">
-                <button>Log In</button>
+                <button type="submit">Log In</button>
             </div>
             <div className =" flex w-full">
               <h4> Not have any account?</h4>
