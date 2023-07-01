@@ -1,13 +1,13 @@
 import { React, useState } from "react";
 import axios from "axios";
 import { server } from "../../server";
-import { AiFillFileImage } from "react-icons/ai";
+// import { AiFillFileImage } from "react-icons/ai";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState([]);
   const [seller, setSeller] = useState("");
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
@@ -38,7 +38,7 @@ const CreateProduct = () => {
     console.log("product from frontend", createdProduct);
 
     axios
-      .post(`${server}/createProduct`, createdProduct)
+      .post(`${server}/product/newproduct`, createdProduct)
       .then((res) => {
         console.log(res);
       })
@@ -50,9 +50,9 @@ const CreateProduct = () => {
     setPrice(0);
     setDescription("");
     setCategory("");
-    setImage("");
+    setImage([]);
     setSeller("");
-    setStock();
+    setStock(0);
 
     // setNumberOfReviews(0);
     // setReview([]);
