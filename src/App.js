@@ -7,6 +7,8 @@ import {
   SignupPage,
   CreateProductPage,
 } from "./routes.js";
+import ProfilePage from "./components/ProfilePage";
+import PrivatePage from "./components/PrivatePage";
 
 function App() {
   return (
@@ -15,7 +17,12 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+
+        <Route path="/profile" element={<PrivatePage><ProfilePage /></PrivatePage>} />
+
+
         <Route path="/create-product" element={<CreateProductPage />} />
+
       </Routes>
     </BrowserRouter>
   );
