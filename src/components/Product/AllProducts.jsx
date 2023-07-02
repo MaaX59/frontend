@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from "react";
 import axios from "axios";
 import {server} from "../../server.js";
+import ProductCard from "./ProductCard.jsx";
 
 function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -26,11 +27,13 @@ function AllProducts() {
   return (
     <div>
         <h1>Welcome to the Homepage</h1>
-        <ul>
-          {products.map((Product) => (
-           <li key={Product._id}>{Product.name}</li>
+        <div className="flex flex-wrap bg-gray-100">
+       
+          {
+          products.map((product, index) => (
+           <ProductCard product={product} key={index} />
       ))}
-        </ul>
+        </div>
 
 
 
