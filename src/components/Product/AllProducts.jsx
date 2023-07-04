@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard.jsx";
 
 function AllProducts() {
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
 
     
@@ -22,17 +23,34 @@ function AllProducts() {
         }
       };
 
+      const handleSearch = (searchTerm) => {
+        if (searchTerm.trim() === "") {
+          setFilteredProducts([]);
+        } else {
+          const filteredProducts = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          setFilteredProducts(filteredProducts);
+        }
+      };
+
 
 
   return (
     <div>
-        <h1>Welcome to the Homepage</h1>
+        
         <div className="flex flex-wrap bg-gray-100">
        
           {
+            filteredProducts.length > 0 ? (
+          filteredProducts.map((product, index) => (
+            <ProductCard product={product} key={index} />
+          ))
+        ) : (
           products.map((product, index) => (
            <ProductCard product={product} key={index} />
-      ))}
+      ))
+      )}
         </div>
 
 
