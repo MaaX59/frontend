@@ -26,7 +26,7 @@ function AllProducts() {
 
   return (
     <div>
-        <h1>Welcome to the Homepage</h1>
+        
         <div className="flex flex-wrap bg-gray-100">
        
           {

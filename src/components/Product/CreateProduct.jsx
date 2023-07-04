@@ -36,7 +36,7 @@ const CreateProduct = () => {
       price,
       description,
       image,
-      seller: user.email,
+      seller: user,
       stock,
       category,
       // numberOfReviews,
