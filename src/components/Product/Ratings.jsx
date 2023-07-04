@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Ratings(num) {
-    console.log(num.num)
+  
 function getStarRating(num) {
 
         const roundedNumber = Math.round(num.num);
