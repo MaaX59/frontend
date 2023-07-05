@@ -6,7 +6,7 @@ import SearchProduct from '../components/SearchProduct';
 
 function ProfilePage() {
 const {user} = useContext(AuthContext);
-console.log(user);
+console.log("user is",user);
   return (
     
     <div>
