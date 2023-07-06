@@ -1,41 +1,21 @@
-import React, { useState } from "react";
+import  {React, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { server } from "../../server";
 import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
+import axios from "axios"
+import { AuthContext } from "../../context/auth.context";
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  
+  const { user, setUser } = useContext(AuthContext);
 
-  // function Rating(rating) {
-  //   const roundedNumber = Math.round(rating);
-  //   switch (roundedNumber) {
-  //     case 1:
-  //       return <h1>⭐☆☆☆☆</h1>;
-  //       break;
-  //     case 2:
-  //       return <h1>⭐⭐☆☆☆</h1>;
-  //       break;
-  //     case 3:
-  //       return <h1>⭐⭐⭐☆☆</h1>;
-  //       break;
-  //     case 4:
-  //       return <h1>⭐⭐⭐⭐☆</h1>;
-  //       break;
-  //     case 0:
-  //       return <h1>☆☆☆☆☆</h1>;
-  //       break;
-  //     default:
-  //       return <h1>⭐⭐⭐⭐⭐</h1>;
-  //   }
-  // }
 
-  const imageArr = product.images;
-console.log(product.ratings)
   const productName = product.name;
-  console.log(imageArr);
+ 
   return (
     <>
       <div className=" w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer">
