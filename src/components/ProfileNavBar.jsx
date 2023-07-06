@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useState, useEffect  } from 'react'
-import {Link} from "react-router-dom";
-import { AuthContext } from '../context/auth.context';
-import { AiFillHeart,  AiOutlineShoppingCart } from "react-icons/ai";
+import React, { useContext, useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
+import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import {
   RiArrowDropDownLine,
   RiComputerLine,
@@ -14,65 +14,67 @@ import {
   RiHeartLine,
   RiBikeLine,
   RiHomeLine,
-} from 'react-icons/ri';
+} from "react-icons/ri";
 
 const categories = [
   {
-    name: 'Electronics',
+    name: "Electronics",
     icon: <RiComputerLine />,
   },
   {
-    name: 'Mobile Phones',
+    name: "Mobile Phones",
     icon: <RiSmartphoneLine />,
   },
   {
-    name: 'Laptops',
+    name: "Laptops",
     icon: <RiComputerLine />,
   },
   {
-    name: 'Accessories',
+    name: "Accessories",
     icon: <RiCpuLine />,
   },
   {
-    name: 'Headphones',
+    name: "Headphones",
     icon: <RiHeadphoneLine />,
   },
   {
-    name: 'Food',
+    name: "Food",
     icon: <RiRestaurantLine />,
   },
   {
-    name: 'Books',
+    name: "Books",
     icon: <RiBookLine />,
   },
   {
-    name: 'Clothes/Shoes',
+    name: "Clothes/Shoes",
     icon: <RiTShirtLine />,
   },
   {
-    name: 'Beauty/Health',
+    name: "Beauty/Health",
     icon: <RiHeartLine />,
   },
   {
-    name: 'Sports',
+    name: "Sports",
     icon: <RiBikeLine />,
   },
   {
-    name: 'Outdoor',
+    name: "Outdoor",
     icon: <RiBikeLine />,
   },
   {
-    name: 'Home',
+    name: "Home",
     icon: <RiHomeLine />,
   },
 ];
 
-
 function ProfileNavBar() {
-    const {logOutUser,user} = useContext(AuthContext)
-    const [click, setClick] = useState(false);
-    const dropdownRef = useRef(null);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { logOutUser, user } = useContext(AuthContext);
+  const [click, setClick] = useState(false);
+  const dropdownRef = useRef(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -85,18 +87,25 @@ function ProfileNavBar() {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-    return (
-      <nav className="bg-blue-700 fixed top-0 left-0 w-full z-10">
+  useEffect(() => {
+    if (user) {
+      setCartCount(user.cart ? user.cart.length : 0);
+      setWishlistCount(user.wishlist ? user.wishlist.length : 0);
+    }
+  }, [user]);
+
+  return (
+    <nav className="bg-blue-700 fixed top-0 left-0 w-full z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex">
-          <div className="ml-4 relative" ref={dropdownRef}>
+            <div className="ml-4 relative" ref={dropdownRef}>
               <button
                 className="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 onClick={handleDropdownToggle}
@@ -118,44 +127,60 @@ function ProfileNavBar() {
                 </div>
               )}
             </div>
-            <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"> Welcome {user && user.email}</p>
-            <Link to="/" className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+            <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+              {" "}
+              Welcome {user && user.email}
+            </p>
+            <Link
+              to="/"
+              className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Home
             </Link>
 
-            <Link to="/create-product" className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+            <Link
+              to="/create-product"
+              className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+            >
               Create an item to sell
             </Link>
 
-            <Link to="/login" className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium" onClick={logOutUser}>
+            <Link
+              to="/login"
+              className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+              onClick={logOutUser}
+            >
               Logout
             </Link>
           </div>
 
           <div className="flex">
-            <div className="relative  px-2" >
-            <Link to="/favourites">
-              <AiFillHeart
-                size={22}
-                className="cursor-pointer"
-                onClick={() => setClick(!click)}
-                color={click ? "red" : "red"}
-                title="view wishlist"
-              />
-              
-                 </Link>
-           
+            <div className="relative  px-2">
+              <Link to="/favourites">
+                <AiOutlineHeart
+                  size={22}
+                  className="cursor-pointer"
+                  onClick={() => setClick(!click)}
+                  color={click ? "red" : "black"}
+                  title="View wishlist"
+                />
+                <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-blue-500 rounded-full text-white text-xs px-1">
+                  {wishlistCount}
+                </span>
+              </Link>
             </div>
 
             <div className="relative  px-2">
-           
               <AiOutlineShoppingCart
                 size={25}
                 className="cursor-pointer"
-               // onClick={() => setOpen(!open)}
+                // onClick={() => setOpen(!open)}
                 color="black"
                 title="Add to cart"
               />
+              <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-blue-500 rounded-full text-white text-xs px-1">
+                {cartCount}
+              </span>
             </div>
           </div>
         </div>
@@ -163,4 +188,4 @@ function ProfileNavBar() {
     </nav>
   );
 }
-export default ProfileNavBar
+export default ProfileNavBar;

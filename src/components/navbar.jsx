@@ -91,19 +91,41 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex">
-          <div className="ml-4 relative" ref={dropdownRef}>
+            <div className="ml-4 relative" ref={dropdownRef}>
               <button
                 className="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 onClick={handleDropdownToggle}
               >
-                Categories <RiArrowDropDownLine className="ml-1" />
+                Filter Products <RiArrowDropDownLine className="ml-1" />
               </button>
               {dropdownOpen && (
                 <div className="absolute top-10 right-0 bg-white shadow-md rounded-md py-2">
+                  {/* Filter options go here */}
+                  <Link
+                    to="/filter-by-name"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    <span className="ml-2">Filter by Name</span>
+                  </Link>
+                  <Link
+                    to="/filter-by-alphabet"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    <span className="ml-2">Filter by Alphabet</span>
+                  </Link>
+                 Here's the continuation of the modified code with the remaining filter options:
+
+```jsx
+                  <Link
+                    to="/filter-by-price"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    <span className="ml-2">Filter by Price</span>
+                  </Link>
                   {categories.map((category) => (
                     <Link
                       key={category.name}
-                      to={`/category/${category.name}`}
+                      to={`/filter-by-category/${category.name}`}
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
                     >
                       {category.icon}

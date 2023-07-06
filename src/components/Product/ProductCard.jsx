@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { server } from "../../server";
+
 import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
+
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
@@ -70,11 +71,7 @@ console.log(product.ratings)
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">
               {product.sold==null ? "0 sold yet" : `${product.sold}, sold`}
-                
-              
-              
-
-            </span>
+          </span>
           </div>
           </Link>
 
