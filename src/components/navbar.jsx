@@ -113,9 +113,7 @@ function Navbar() {
                   >
                     <span className="ml-2">Filter by Alphabet</span>
                   </Link>
-                 Here's the continuation of the modified code with the remaining filter options:
-
-```jsx
+              
                   <Link
                     to="/filter-by-price"
                     className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
