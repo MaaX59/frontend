@@ -16,7 +16,9 @@ const Signup = ({ props }) => {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    console.log("pic",file);
     setAvatar(file);
+    
   };
 
   const handleSubmit = (e) => {
@@ -25,8 +27,9 @@ const Signup = ({ props }) => {
       email,
       name,
       password,
+      avatar,
     };
-    console.log(newUser);
+    console.log("new user",newUser);
     
     axios
       .post(`${server}/user/signup`, newUser)

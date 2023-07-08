@@ -1,40 +1,21 @@
-import React, { useState } from "react";
+import  {React, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { server } from "../../server";
 import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
+import Ratings from "./Ratings";
+import axios from "axios"
+import { AuthContext } from "../../context/auth.context";
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  
+  const { user, setUser } = useContext(AuthContext);
 
-  function Rating(rating) {
-    const roundedNumber = Math.round(rating);
-    switch (roundedNumber) {
-      case 1:
-        return <h1>⭐☆☆☆☆</h1>;
-        break;
-      case 2:
-        return <h1>⭐⭐☆☆☆</h1>;
-        break;
-      case 3:
-        return <h1>⭐⭐⭐☆☆</h1>;
-        break;
-      case 4:
-        return <h1>⭐⭐⭐⭐☆</h1>;
-        break;
-      case 0:
-        return <h1>☆☆☆☆☆</h1>;
-        break;
-      default:
-        return <h1>⭐⭐⭐⭐⭐</h1>;
-    }
-  }
-
-  const imageArr = product.images;
 
   const productName = product.name;
-  console.log(imageArr);
+ 
   return (
     <>
       <div className=" w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer">
@@ -60,13 +41,20 @@ function ProductCard({ product }) {
               ? productName.slice(0, 40) + "..."
               : productName}
           </h4>
-          <div className="flex">{Rating(product.review.rating)}</div>
+          <div className="flex"> <Ratings num={product.ratings} /> </div>
           <div className="py2 flex items-center justify-between">
             <div className="flex">
               <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
                 {product.price} $
               </h5>
             </div>
+            <span className="font-[400] text-[17px] text-[#68d284]">
+              {product.sold==null ? "0 sold yet" : `${product.sold}, sold`}
+                
+              
+              
+
+            </span>
           </div>
           </Link>
 

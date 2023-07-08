@@ -1,9 +1,10 @@
-import {React, useEffect, useState} from "react";
+import { React, useEffect, useState } from "react";
 import axios from "axios";
-import {server} from "../../server.js";
+import { server } from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
 
 function AllProducts() {
+
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -54,12 +55,9 @@ function AllProducts() {
         </div>
 
 
-
     </div>
     // <div>
     //   <h1>Welcome to the Homepage</h1>
-
-
 
     //   {Array.isArray(products) && products.length > 0 ? (
     //     <ul>
