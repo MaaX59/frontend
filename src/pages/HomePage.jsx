@@ -4,6 +4,7 @@ import Navbar from "../components/navbar.jsx"
 // import { useState,useEffect } from 'react';
 // import { server } from "../server.js";
 import AllProducts from '../components/Product/AllProducts.jsx';
+import SearchProduct from '../components/SearchProduct.jsx';
 
 
 
@@ -26,7 +27,10 @@ function HomePage() {
 
   return (
     <div>
+    
         <Navbar />
+        <h1> HomePage</h1>
+        <SearchProduct/>
         <AllProducts />
         {/* <div>
     <h1>Welcome to the Homepage</h1>

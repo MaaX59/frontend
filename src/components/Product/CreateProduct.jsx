@@ -30,20 +30,20 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const createdProduct = {
       name,
       price,
       description,
       image,
-      seller:user.email,
+      seller: user.email,
       stock,
       category,
       // numberOfReviews,
       // ratings,
       // review
     };
-    
+
     console.log("product from frontend", createdProduct);
 
     axios
