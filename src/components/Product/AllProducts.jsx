@@ -4,29 +4,57 @@ import { server } from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
 
 function AllProducts() {
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${server}/product/allproducts`);
-      setProducts(response.data.productsFromDb);
-      console.log("this is the product list", response.data.productsFromDb);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+
+    
+    useEffect(() => {
+        fetchProducts();
+      }, []);
+    
+      const fetchProducts = async () => {
+        try {
+          const response = await axios.get(`${server}/product/allproducts`);
+          setProducts(response.data.productsFromDb);
+          console.log("this is the product list", response.data.productsFromDb)
+        } catch (error) {
+          console.error('Error fetching products:', error);
+        }
+      };
+
+      const handleSearch = (searchTerm) => {
+        if (searchTerm.trim() === "") {
+          setFilteredProducts([]);
+        } else {
+          const filteredProducts = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          setFilteredProducts(filteredProducts);
+        }
+      };
+
+
 
   return (
     <div>
-      <div className="flex flex-wrap bg-gray-100">
-        {products.map((product, index) => (
-          <ProductCard product={product} key={index} />
-        ))}
-      </div>
+        
+        <div className="flex flex-wrap bg-gray-100">
+       
+          {
+            filteredProducts.length > 0 ? (
+          filteredProducts.map((product, index) => (
+            <ProductCard product={product} key={index} />
+          ))
+        ) : (
+          products.map((product, index) => (
+           <ProductCard product={product} key={index} />
+      ))
+      )}
+        </div>
+
+
     </div>
     // <div>
     //   <h1>Welcome to the Homepage</h1>
