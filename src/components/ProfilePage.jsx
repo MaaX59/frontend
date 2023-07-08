@@ -14,7 +14,6 @@ console.log("user is",user);
 
     <ProfileNavBar/>
     <h1>ProfilePage</h1>
-    <SearchProduct />
     <AllProducts/>
     </div>
   )

@@ -30,7 +30,6 @@ function HomePage() {
     
         <Navbar />
         <h1> HomePage</h1>
-        <SearchProduct/>
         <AllProducts />
         {/* <div>
     <h1>Welcome to the Homepage</h1>
