@@ -7,9 +7,9 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 
-function ProductDetailsCard({ setOpen, product }) {
+function ProductDetailsCard({ setOpen, product, setClick, click, handleWishlist }) {
   const [count, setCount] = useState(1);
-  const [click, setClick] = useState(false);
+  
   const [select, setSelect] = useState(false);
 
   const countDown = () => {
@@ -87,7 +87,7 @@ function ProductDetailsCard({ setOpen, product }) {
                     <AiFillHeart
                       size={22}
                       className="cursor-pointer "
-                      onClick={() => setClick(!click)}
+                      onClick={handleWishlist}
                       color={click ? "red" : "black"}
                       title="Remove from wishlist"
                     />
@@ -95,7 +95,7 @@ function ProductDetailsCard({ setOpen, product }) {
                     <AiOutlineHeart
                       size={22}
                       className="cursor-pointer"
-                      onClick={() => setClick(!click)}
+                      onClick={handleWishlist}
                       color={click ? "red" : "black"}
                       title="Add to wishlist"
                     />

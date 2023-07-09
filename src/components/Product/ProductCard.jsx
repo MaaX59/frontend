@@ -1,40 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-
-import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import axios from "axios";
+import {
+  AiFillHeart,
+  AiOutlineEye,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
-
+import { AuthContext } from "../../context/auth.context.jsx";
+import { server } from "../../server";
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // function Rating(rating) {
-  //   const roundedNumber = Math.round(rating);
-  //   switch (roundedNumber) {
-  //     case 1:
-  //       return <h1>⭐☆☆☆☆</h1>;
-  //       break;
-  //     case 2:
-  //       return <h1>⭐⭐☆☆☆</h1>;
-  //       break;
-  //     case 3:
-  //       return <h1>⭐⭐⭐☆☆</h1>;
-  //       break;
-  //     case 4:
-  //       return <h1>⭐⭐⭐⭐☆</h1>;
-  //       break;
-  //     case 0:
-  //       return <h1>☆☆☆☆☆</h1>;
-  //       break;
-  //     default:
-  //       return <h1>⭐⭐⭐⭐⭐</h1>;
-  //   }
-  // }
+  const { user } = useContext(AuthContext);
+
+  // axios.post(`${server}/${userId}/wishlist/${productId}`, userAndProduct)
+
+  const handleWishlist = () => {
+    
+  const userId = user._id;
+  const productId = product._id;
+
+  
+      
+    if (!click) {
+      userId ? 
+
+      
+      // console.log(userId,"added to wishlist", product._id)
+
+      axios
+        .post(`${server}/wishlist/${userId}/addWishlist/${productId}`)
+        .then(setClick(!click))
+        .catch(function (error) {
+          console.log("error while trying to post wishlist", error);
+        }) : <Link to="/login"></Link>
+    } else if (click) {
+      console.log("removed from wishlist");
+
+      axios
+        .delete(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
+        .then(setClick(!click))
+        .catch(function (error) {
+          console.log("error while trying to post wishlist", error);
+        });
+    }
+    
+  };
 
   const imageArr = product.images;
-console.log(product.ratings)
+  console.log(product.ratings);
   const productName = product.name;
   console.log(imageArr);
   return (
@@ -62,7 +81,10 @@ console.log(product.ratings)
               ? productName.slice(0, 40) + "..."
               : productName}
           </h4>
-          <div className="flex"> <Ratings num={product.ratings} /> </div>
+          <div className="flex">
+            {" "}
+            <Ratings num={product.ratings} />{" "}
+          </div>
           <div className="py2 flex items-center justify-between">
             <div className="flex">
               <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
@@ -70,51 +92,48 @@ console.log(product.ratings)
               </h5>
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">
-              {product.sold==null ? "0 sold yet" : `${product.sold}, sold`}
-          </span>
+              {product.sold == null ? "0 sold yet" : `${product.sold}, sold`}
+            </span>
           </div>
-          </Link>
+        </Link>
 
-          {/* Side Option */}
-          <div>
-            {click ? (
-              <AiFillHeart
-                size={22}
-                className="cursor-pointer absolute right-1 top-5"
-                onClick={() => setClick(!click)}
-                color={click ? "red" : "black"}
-                title="Remove from wishlist"
-              />
-            ) : (
-              <AiOutlineHeart
-                size={22}
-                className="cursor-pointer absolute right-1 top-5"
-                onClick={() => setClick(!click)}
-                color={click ? "red" : "black"}
-                title="Add to wishlist"
-              />
-            )}
-            <AiOutlineEye
-                size={22}
-                className="cursor-pointer absolute right-1 top-14"
-                onClick={() => setOpen(!open)}
-                color="black"
-                title="Quick View"
-              />
-              <AiOutlineShoppingCart
-                size={25}
-                className="cursor-pointer absolute right-1 top-24"
-                onClick={() => setOpen(!open)}
-                color="#444"
-                title="Add to cart"
-              />
-              {
-                open ? (
-                <ProductDetailsCard setOpen={setOpen} product={product} />
-                ) : null
-              }
-          </div>
-        
+        {/* Side Option */}
+        <div>
+          {click ? (
+            <AiFillHeart
+              size={22}
+              className="cursor-pointer absolute right-1 top-5"
+              onClick={handleWishlist}
+              color={click ? "red" : "black"}
+              title="Remove from wishlist"
+            />
+          ) : (
+            <AiOutlineHeart
+              size={22}
+              className="cursor-pointer absolute right-1 top-5"
+              onClick={handleWishlist}
+              color={click ? "red" : "black"}
+              title="Add to wishlist"
+            />
+          )}
+          <AiOutlineEye
+            size={22}
+            className="cursor-pointer absolute right-1 top-14"
+            onClick={() => setOpen(!open)}
+            color="black"
+            title="Quick View"
+          />
+          <AiOutlineShoppingCart
+            size={25}
+            className="cursor-pointer absolute right-1 top-24"
+            // onClick={() => setOpen(!open)}
+            color="#444"
+            title="Add to cart"
+          />
+          {open ? (
+            <ProductDetailsCard handleWishlist={handleWishlist} setOpen={setOpen} product={product} setClick={setClick} click={click}/>
+          ) : null}
+        </div>
       </div>
     </>
   );
