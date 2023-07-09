@@ -67,11 +67,12 @@ const categories = [
   },
 ];
 
-function ProfileNavBar() {
+function ProfileNavBar({handleFilterByCategory}) {
   const { logOutUser, user } = useContext(AuthContext);
   const [click, setClick] = useState(false);
   const dropdownRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
@@ -80,11 +81,52 @@ function ProfileNavBar() {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleCategoryDropdownToggle = () => {
+    setCategoryDropdownOpen(!categoryDropdownOpen)
+  }
+
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownOpen(false);
     }
   };
+
+  const renderCategoryButtons = () => {
+    return (
+      <>
+         <div className="relative inline-block">
+        <button
+          onClick={handleCategoryDropdownToggle}
+          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-md"
+        >
+          Filter by Category
+        </button>
+        {categoryDropdownOpen && (
+          <div className="absolute top-10 right-0 bg-white shadow-md rounded-md py-2">
+            <button
+              onClick={() => handleFilterByCategory('All')}
+              className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-md"
+            >
+              All
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => handleFilterByCategory(category.name)}
+                className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-md"
+              >
+                {category.icon}
+                <span className="ml-2">{category.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      </>
+    );
+  };
+  
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -110,23 +152,15 @@ function ProfileNavBar() {
                 className="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 onClick={handleDropdownToggle}
               >
-                Categories <RiArrowDropDownLine className="ml-1" />
+                filter product <RiArrowDropDownLine className="ml-1" />
               </button>
               {dropdownOpen && (
-                <div className="absolute top-10 right-0 bg-white shadow-md rounded-md py-2">
-                  {categories.map((category) => (
-                    <Link
-                      key={category.name}
-                      to={`/category/${category.name}`}
-                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200"
-                    >
-                      {category.icon}
-                      <span className="ml-2">{category.name}</span>
-                    </Link>
-                  ))}
-                </div>
-              )}
+  <div className="absolute top-10 right-0 bg-white shadow-md rounded-md py-2">
+   {renderCategoryButtons()}
+  </div>
+)}
             </div>
+            
             <p className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
               {" "}
               Welcome {user && user.email}

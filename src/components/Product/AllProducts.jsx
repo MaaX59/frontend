@@ -3,6 +3,7 @@ import axios from "axios";
 import {server} from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
 import SearchProduct from "../SearchProduct.jsx";
+import ProfileNavBar from "../ProfileNavBar.jsx";
 
 function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -35,10 +36,19 @@ function AllProducts() {
         }
       };
 
-
+      const handleFilterByCategory = (category) => {
+        if (category === 'All') {
+          setFilteredProducts(products);
+        } else {
+          const filteredProducts = products.filter((product) => product.category === category);
+          setFilteredProducts(filteredProducts);
+        }
+        
+      };
 
   return (
     <div>
+       <ProfileNavBar handleFilterByCategory={handleFilterByCategory}  />
          <SearchProduct handleSearch={handleSearch} />
         <div className="flex flex-wrap bg-gray-100">
        
