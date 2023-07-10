@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -13,32 +13,58 @@ import { AuthContext } from "../../context/auth.context.jsx";
 import { server } from "../../server";
 
 function ProductCard({ product }) {
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
+
+  const [currentUser, setCurrentUser] = useState([]);
 
   const { user } = useContext(AuthContext);
 
-  // axios.post(`${server}/${userId}/wishlist/${productId}`, userAndProduct)
+  useEffect(() => {
+    fetchUserModel();
+  }, []);
+
+  const fetchUserModel = async () => {
+    const currentUserEmail = user.email;
+
+    try {
+      const response = await axios.get(`${server}/user/getuser`);
+
+      response.data.foundUser.map((elem) => {
+        if (elem.email === currentUserEmail) {
+          // console.log("wishlist",elem.wishlist,"product.id",product._id)
+          if (elem.wishlist.length >= 1) {
+            console.log(elem.wishlist);
+            elem.wishlist.map((wish)=> {
+             return wish === product._id ? setClick(true) : setClick(false);
+                        // return  wish===product._id ? console.log("product =",product._id,"match", wish) : console.log("product =",product._id,"do not match wishlist items", wish);
+
+            });
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   const handleWishlist = () => {
-    
-  const userId = user._id;
-  const productId = product._id;
+    const userId = user._id;
+    const productId = product._id;
 
-  
-      
     if (!click) {
-      userId ? 
+      userId ? (
+        // console.log(userId,"added to wishlist", product._id)
 
-      
-      // console.log(userId,"added to wishlist", product._id)
-
-      axios
-        .post(`${server}/wishlist/${userId}/addWishlist/${productId}`)
-        .then(setClick(!click))
-        .catch(function (error) {
-          console.log("error while trying to post wishlist", error);
-        }) : <Link to="/login"></Link>
+        axios
+          .post(`${server}/wishlist/${userId}/addWishlist/${productId}`)
+          .then(setClick(!click))
+          .catch(function (error) {
+            console.log("error while trying to post wishlist", error);
+          })
+      ) : (
+        <Link to="/login"></Link>
+      );
     } else if (click) {
       console.log("removed from wishlist");
 
@@ -49,13 +75,10 @@ function ProductCard({ product }) {
           console.log("error while trying to post wishlist", error);
         });
     }
-    
   };
 
-  const imageArr = product.images;
-  console.log(product.ratings);
   const productName = product.name;
-  console.log(imageArr);
+
   return (
     <>
       <div className=" w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer">
@@ -131,7 +154,13 @@ function ProductCard({ product }) {
             title="Add to cart"
           />
           {open ? (
-            <ProductDetailsCard handleWishlist={handleWishlist} setOpen={setOpen} product={product} setClick={setClick} click={click}/>
+            <ProductDetailsCard
+              handleWishlist={handleWishlist}
+              setOpen={setOpen}
+              product={product}
+              setClick={setClick}
+              click={click}
+            />
           ) : null}
         </div>
       </div>
