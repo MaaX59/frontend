@@ -27,7 +27,7 @@ const Login = () => {
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
     }else {
-      setErrorMessage('An error occurred during login.');
+      setErrorMessage('Incorrect Password!');
     }
   }
 
@@ -44,6 +44,7 @@ const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -80,6 +81,8 @@ const Login = () => {
             <div className="group relative w-full h-[40px] flex justify-center rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-transparent font-medium text-sm">
               <button type="submit">Log In</button>
             </div>
+            {errorMessage && <p>{errorMessage}</p>}
+
             <div className=" flex w-full">
               <h4> Not have any account?</h4>
               <Link to="/signup" className="text-blue-600 pl-2">

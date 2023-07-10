@@ -12,44 +12,59 @@ const Signup = ({ props }) => {
   const [avatar, setAvatar] = useState(null);
 
   const navigate = useNavigate();
-  const { setToken, authenticateUser, setIsLoggedIn } = useContext(AuthContext);
+  const { user, setToken, authenticateUser, setIsLoggedIn } =
+    useContext(AuthContext);
+  const [isExistingUser, setIsExistingUser] = useState(false);
+
+
+  // else if (!passwordPattern.test(password)) {
+  //   setPasswordError(true);
+  //   return;
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    console.log("pic",file);
+    console.log("pic", file);
     setAvatar(file);
-    
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newUser = {
-      email,
-      name,
-      password,
-      avatar,
-    };
-    console.log("new user",newUser);
-    
-    axios
-      .post(`${server}/user/signup`, newUser)
-      .then((res) => {
-        console.log(res,"<===")
-        const actualToken = res.data.authToken;
-        setToken(actualToken);
-        authenticateUser();
-        setIsLoggedIn(true);
-        navigate("/profile");
-        
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  //  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+    if (user && user.email === email) {
+      setIsExistingUser(true);
+    } else
+    {
+      const newUser = {
+        email,
+        name,
+        password,
+        avatar,
+      };
+      console.log("new user", newUser);
 
-    setEmail("");
-    setName("");
-    setPassword("");
-    setAvatar(null);
+      axios
+        .post(`${server}/user/signup`, newUser)
+        .then((res) => {
+          console.log(res, "<===");
+          const actualToken = res.data.authToken;
+          setToken(actualToken);
+          authenticateUser();
+          setIsLoggedIn(true);
+          navigate("/profile");
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 400) {    
+            setIsExistingUser(true);
+          } else {
+            console.log('Error:', err);
+          }
+        });
+
+      setEmail("");
+      setName("");
+      setPassword("");
+      setAvatar(null);
+    }
   };
 
   return (
@@ -61,6 +76,7 @@ const Signup = ({ props }) => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -145,6 +161,13 @@ const Signup = ({ props }) => {
                 Submit
               </button>
             </div>
+            {isExistingUser && (
+        <p>Email already exists! Please Sign In</p>
+      )}
+
+      {/* {passwordError && (
+      <p>Password should be at least 6 characters long and contain at least one number and one special character.</p>
+    )} */}
             <div className=" flex w-full">
               <h4> Already have an Account?</h4>
               <Link to="/login" className="text-blue-600 pl-2">
