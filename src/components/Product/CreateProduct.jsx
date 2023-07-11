@@ -17,7 +17,8 @@ const CreateProduct = () => {
   // const [review, setReview] = useState([]);
 
   const { isLoading, isLoggedIn } = useContext(AuthContext);
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, tokenState } = useContext(AuthContext);
+  
 
   // console.log(user.email)
   // const userEmail = user.email;
@@ -45,9 +46,10 @@ const CreateProduct = () => {
     };
 
     console.log("product from frontend", createdProduct);
+    const gotToken = localStorage.getItem("authToken");
 
     axios
-      .post(`${server}/product/newproduct`, createdProduct)
+      .post(`${server}/product/newproduct`, createdProduct,{ headers:{ authorization: `Bearer ${gotToken}`}})
       .then((res) => {
         console.log(res);
       })

@@ -56,6 +56,7 @@ const AuthContextWrapper = (props) => {
     <AuthContext.Provider
       value={{
         setToken,
+        tokenState,
         authenticateUser,
         isLoading,
         isLoggedIn,
