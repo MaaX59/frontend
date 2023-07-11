@@ -3,12 +3,14 @@ import axios from "axios";
 import { server } from "../../server";
 import { AuthContext } from "../../context/auth.context";
 // import { AiFillFileImage } from "react-icons/ai";
+import service from "../../api/service";
+
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
   const [seller, setSeller] = useState("");
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
@@ -19,37 +21,59 @@ const CreateProduct = () => {
   const { isLoading, isLoggedIn } = useContext(AuthContext);
   const { user, setUser, tokenState } = useContext(AuthContext);
   
+  const handleFileUpload = (e) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
 
-  // console.log(user.email)
-  // const userEmail = user.email;
+    const uploadData = new FormData();
 
-  const handleImageChange = (e) => {
-    e.preventDefault();
-    let image = Array.from(e.target.files);
-    setImage((prevImages) => [...prevImages, ...image]);
+    // imageUrl => this name has to be the same as in the model since we pass
+    // req.body to .create() method when creating a new movie in '/api/movies' POST route
+    uploadData.append("imageUrl", e.target.files[0]);
+
+    service
+      .uploadImage(uploadData)
+      .then((response) => {
+        // console.log("response is: ", response);
+        // response carries "fileUrl" which we can use to update the state
+        setImageUrl(response.fileUrl);
+      })
+      .catch((err) => console.log("Error while uploading the file: ", err));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const uploadData = new FormData();
 
-    const createdProduct = {
-      name,
-      price,
-      description,
-      image,
-      seller: user,
-      stock,
-      category,
+    // imageUrl => this name has to be the same as in the model since we pass
+    // req.body to .create() method when creating a new movie in '/api/movies' POST route
+    uploadData.append("imageUrl", e.target.imageURL.files[0]);
+    uploadData.append("name", name);
+    uploadData.append("description", description);
+    uploadData.append("price", price);
+    uploadData.append("category", category);
+    uploadData.append("seller", user._id);
+    uploadData.append("stock", stock);
+console.log("User", user)
+
+    // const createdProduct = {
+    //   name,
+    //   description,
+    //   category,
+    //   price,
+
+    //   imageUrl,
+    //   seller: user,
+    //   stock,
+
       // numberOfReviews,
       // ratings,
       // review
-    };
+    
 
-    console.log("product from frontend", createdProduct);
-    const gotToken = localStorage.getItem("authToken");
+    console.log("product from frontend", uploadData);
 
     axios
-      .post(`${server}/product/newproduct`, createdProduct,{ headers:{ authorization: `Bearer ${gotToken}`}})
+      .post(`${server}/product/newproduct`, uploadData)
       .then((res) => {
         console.log(res);
       })
@@ -61,7 +85,7 @@ const CreateProduct = () => {
     setPrice(0);
     setDescription("");
     setCategory("");
-    setImage([]);
+    setImageUrl("");
     setSeller("");
     setStock(0);
 
@@ -69,6 +93,55 @@ const CreateProduct = () => {
     // setReview([]);
     // setRatings("");
   };
+  // console.log(user.email)
+  // const userEmail = user.email;
+
+  // const handleImageChange = (e) => {
+  //   e.preventDefault();
+  //   let image = Array.from(e.target.files);
+  //   setImage((prevImages) => [...prevImages, ...image]);
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   const createdProduct = {
+  //     name,
+  //     price,
+  //     description,
+  //     image,
+  //     seller: user,
+  //     stock,
+  //     category,
+  //     // numberOfReviews,
+  //     // ratings,
+  //     // review
+  //   };
+
+  //   console.log("product from frontend", createdProduct);
+  //   const gotToken = localStorage.getItem("authToken");
+
+  //   axios
+  //     .post(`${server}/product/newproduct`, createdProduct,{ headers:{ authorization: `Bearer ${gotToken}`}})
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+
+  //   setName("");
+  //   setPrice(0);
+  //   setDescription("");
+  //   setCategory("");
+  //   setImage([]);
+  //   setSeller("");
+  //   setStock(0);
+
+  //   // setNumberOfReviews(0);
+  //   // setReview([]);
+  //   // setRatings("");
+  // };
 
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
@@ -168,17 +241,18 @@ const CreateProduct = () => {
             <input
               type="file"
               id="upload"
+              name="imageURL"
               // className="hidden"
               multiple
-              onChange={handleImageChange}
+              onChange={handleFileUpload}
             />
             {/* <lable htmlFor="upload">
             <AiFillFileImage size={30} className="mt-3 " color="#555" />
           </lable> */}
             {/* why don´t you fucking work!?!?!?! shit code */}
 
-            {image &&
-              image.map((i) => (
+            {imageUrl &&
+              imageUrl.map((i) => (
                 <img
                   src={URL.createObjectURL(i)}
                   key={i}

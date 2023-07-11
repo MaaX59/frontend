@@ -90,7 +90,7 @@ function ProductCard({ product }) {
           <img
             // src={product.images[0].image}
             //src={`${server}${product.images && product.images[0]}`}
-            src="https://www.leparisien.fr/resizer/fGXimQvLycC2XjTOb9nran3rDcU=/1248x782/filters:focal(1184x745:1194x755)/cloudfront-eu-central-1.images.arcpublishing.com/leparisien/NJE5TPKX7NDY3AL7MWIJJEXZOA.jpg"
+            src={product.images ?product.images[0]  : "https://erp.netbizde.com/cdn/static/products/default.jpg" }
             alt={productName}
             className="w-[220px] h-[170px] object-contain"
           />
@@ -116,9 +116,9 @@ function ProductCard({ product }) {
                 {product.price} $
               </h5>
             </div>
-            <span className="font-[400] text-[17px] text-[#68d284]">
+            {/* <span className="font-[400] text-[17px] text-[#68d284]">
               {product.sold == null ? "0 sold yet" : `${product.sold}, sold`}
-            </span>
+            </span> */}
           </div>
         </Link>
 
