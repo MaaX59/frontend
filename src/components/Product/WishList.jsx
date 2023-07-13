@@ -1,48 +1,50 @@
-// import { React, useState, useContext } from "react";
-// import {  useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import { server } from "../../server";
-// import { AuthContext } from "../../context/auth.context";
+import { React, useState, useContext, useEffect } from "react";
 
+import axios from "axios";
+import { server } from "../../server";
+import { AuthContext } from "../../context/auth.context";
+import SingleWishlistItem from "./SingleWishlistItem.jsx";
 
-// function WishList() {
-//     // const [email, setEmail] = useState("");
-//     // const [password, setPassword] = useState("");
-//     const [errorMessage, setErrorMessage] = useState(undefined);
-//     // const {  setToken, authenticateUser, setIsLoggedIn } = useContext(AuthContext);
+function Wishlist() {
+  const { user } = useContext(AuthContext);
+  const [wishlist, setWishlist] = useState([]);
 
-//     const navigate = useNavigate();
+  useEffect(() => {
+    fetchUserModel();
+  });
 
-//     const handleSubmitWishList = async (e) => {
-//         e.preventDefault();
-//       //  const loginCheck = { email, password };
-//         const { data } = await axios.post(`${server}/user/login`);
-//        // const actualToken = data.authToken;
-//        const userId = data.user._id;
-//        const productId = data.product._id;
+  const fetchUserModel = async () => {
+    try {
+      const currentUserEmail = user.email;
+      const response = await axios.get(`${server}/user/getuser`);
+
+      if (user) {
+        response.data.foundUser.map((elem) => {
+          if (elem.email === currentUserEmail) {
+            // console.log("wishlist",elem.wishlist,"product.id",product._id)
+            if (elem.wishlist.length >= 1) {
+              return setWishlist(elem.wishlist);
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  console.log("fetch wish", wishlist);
+
+  return (
+    <div className="fixed top-19 left-0 w-full bg-[#ffffffea] h-screen">
+      <div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm">
         
-//         try {
-//           await axios.post(`${server}/${userId}/wishlist/${productId}`, null, {
-//             // headers: {
-//             //   Authorization: `Bearer ${actualToken}`,
-//             // },
-           
-//           });
-//           navigate("/favourites"); 
-          
-//         } catch (error) {
-//           if (error.response && error.response.data && error.response.data.message) {
-//             setErrorMessage(error.response.data.message);
-//           } else {
-//             setErrorMessage('An error occurred during adding products to wishlist.');
-//           }
-//         }
-//       };
-      
-
-//   return (
-//     <div>WishList</div>
-//   )
-// }
-
-// export default WishList
+            {wishlist.map((data=> 
+            <SingleWishlistItem data={data} />
+          ))}
+        
+      </div>
+    </div>
+  );
+}
+export default Wishlist;

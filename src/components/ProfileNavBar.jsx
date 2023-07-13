@@ -190,7 +190,7 @@ function ProfileNavBar({handleFilterByCategory}) {
 
           <div className="flex">
             <div className="relative  px-2">
-              <Link to="/favourites">
+              <Link to="/wishlist">
                 <AiOutlineHeart
                   size={22}
                   className="cursor-pointer"

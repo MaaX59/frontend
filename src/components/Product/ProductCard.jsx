@@ -11,6 +11,7 @@ import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
 import { AuthContext } from "../../context/auth.context.jsx";
 import { server } from "../../server";
+// import GetUserWishlist from "../GetUserWishlist.jsx";
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
@@ -23,10 +24,17 @@ function ProductCard({ product }) {
   useEffect(() => {
     fetchUserModel();
   }, []);
+  // const fetchUserModel=  ()=> {
+  //   try{
+  //      console.log("get user wishlist", GetUserWishlist )
+
+  //   }
+  //   catch(error){
+  //     console.error("Error fetching wishlist:", error);
+  //   }
+  // }
 
   const fetchUserModel = async () => {
-    
-
     try {
       const currentUserEmail = user.email;
       const response = await axios.get(`${server}/user/getuser`);
@@ -90,7 +98,11 @@ function ProductCard({ product }) {
           <img
             // src={product.images[0].image}
             //src={`${server}${product.images && product.images[0]}`}
-            src={product.images ?product.images[0]  : "https://erp.netbizde.com/cdn/static/products/default.jpg" }
+            src={
+              product.images
+                ? product.images[0]
+                : "https://erp.netbizde.com/cdn/static/products/default.jpg"
+            }
             alt={productName}
             className="w-[220px] h-[170px] object-contain"
           />

@@ -6,6 +6,7 @@ import {
   LoginPage,
   SignupPage,
   CreateProductPage,
+  WishlistPage,
 } from "./routes.js";
 import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
@@ -25,6 +26,9 @@ function App() {
               <ProfilePage />
             </PrivatePage>
           }
+        />
+        <Route path="/wishlist"
+        element={<WishlistPage />}
         />
 
         <Route path="/create-product" element={<CreateProductPage />} />
