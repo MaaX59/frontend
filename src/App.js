@@ -10,6 +10,7 @@ import {
 } from "./routes.js";
 import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
+import SellerDashboard from "./components/SellerDashboard";
 
 function App() {
   return (
@@ -28,10 +29,14 @@ function App() {
           }
         />
         <Route path="/wishlist"
-        element={<WishlistPage />}
+        element={<PrivatePage>
+        <WishlistPage />
+        </PrivatePage>}
         />
 
-        <Route path="/create-product" element={<CreateProductPage />} />
+<Route path="/seller-dashboard" element={<PrivatePage><SellerDashboard/></PrivatePage>} />
+
+        <Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
       </Routes>
     </BrowserRouter>
   );

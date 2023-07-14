@@ -1,11 +1,11 @@
 import React from "react";
 import Login from "../components/Login/Login.jsx";
-import Navbar from "../components/navbar.jsx"
+import LogSigNavBar from "../components/LogSigNavBar.jsx";
 
 const LoginPage = () => {
   return (
     <div>
-      <Navbar/>
+      <LogSigNavBar/>
       <Login/>
     </div>
   );

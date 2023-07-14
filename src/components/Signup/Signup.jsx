@@ -4,6 +4,7 @@ import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { AuthContext } from "../../context/auth.context";
+import service from "../../api/service";
 
 const Signup = ({ props }) => {
   const [email, setEmail] = useState("");
@@ -20,30 +21,39 @@ const Signup = ({ props }) => {
   // else if (!passwordPattern.test(password)) {
   //   setPasswordError(true);
   //   return;
+  const handleFileUpload = (e) => {
+    const uploadData = new FormData();
+    uploadData.append("avatar", e.target.files);
 
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    console.log("pic", file);
-    setAvatar(file);
+    service
+      .uploadImage(uploadData)
+      .then((response) => {
+        setAvatar(response.fileUrl);
+      })
+      .catch((err) => console.log("Error while uploading the file: ", err));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const uploadData = new FormData();
   //  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
     if (user && user.email === email) {
       setIsExistingUser(true);
     } else
     {
-      const newUser = {
-        email,
-        name,
-        password,
-        avatar,
-      };
-      console.log("new user", newUser);
+      if (e.target.avatar && e.target.avatar.files) {
+        uploadData.append("name", name);
+        uploadData.append("email", email);
+        uploadData.append("password", password);
+        uploadData.append("avatar", e.target.avatar.files);
+      }
+   
+  
+   
+      console.log("new user", uploadData);
 
       axios
-        .post(`${server}/user/signup`, newUser)
+        .post(`${server}/user/signup`, uploadData)
         .then((res) => {
           console.log(res, "<===");
           const actualToken = res.data.authToken;
@@ -51,6 +61,7 @@ const Signup = ({ props }) => {
           authenticateUser();
           setIsLoggedIn(true);
           navigate("/profile");
+        
         })
         .catch((err) => {
           if (err.response && err.response.status === 400) {    
@@ -147,7 +158,7 @@ const Signup = ({ props }) => {
                     name="avatar"
                     id="file-input"
                     accept=".jpg,.jpeg,.png"
-                    onChange={handleFileInputChange}
+                    onChange={handleFileUpload}
                     className="sr-only"
                   />
                 </label>

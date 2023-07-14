@@ -53,22 +53,7 @@ const CreateProduct = () => {
     uploadData.append("category", category);
     uploadData.append("seller", user._id);
     uploadData.append("stock", stock);
-console.log("User", user)
-
-    // const createdProduct = {
-    //   name,
-    //   description,
-    //   category,
-    //   price,
-
-    //   imageUrl,
-    //   seller: user,
-    //   stock,
-
-      // numberOfReviews,
-      // ratings,
-      // review
-    
+    console.log("User", user)
 
     console.log("product from frontend", uploadData);
 
@@ -89,83 +74,35 @@ console.log("User", user)
     setSeller("");
     setStock(0);
 
-    // setNumberOfReviews(0);
-    // setReview([]);
-    // setRatings("");
+   
   };
-  // console.log(user.email)
-  // const userEmail = user.email;
 
-  // const handleImageChange = (e) => {
-  //   e.preventDefault();
-  //   let image = Array.from(e.target.files);
-  //   setImage((prevImages) => [...prevImages, ...image]);
-  // };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
 
-  //   const createdProduct = {
-  //     name,
-  //     price,
-  //     description,
-  //     image,
-  //     seller: user,
-  //     stock,
-  //     category,
-  //     // numberOfReviews,
-  //     // ratings,
-  //     // review
-  //   };
-
-  //   console.log("product from frontend", createdProduct);
-  //   const gotToken = localStorage.getItem("authToken");
-
-  //   axios
-  //     .post(`${server}/product/newproduct`, createdProduct,{ headers:{ authorization: `Bearer ${gotToken}`}})
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   setName("");
-  //   setPrice(0);
-  //   setDescription("");
-  //   setCategory("");
-  //   setImage([]);
-  //   setSeller("");
-  //   setStock(0);
-
-  //   // setNumberOfReviews(0);
-  //   // setReview([]);
-  //   // setRatings("");
-  // };
-
-  return (
-    <div className="w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
-      <form onSubmit={handleSubmit}>
+return (
+  <div className="flex flex-col justify-center items-center h-screen">
+  <div className="w-full max-w-md mt-16">
+    <h2 className="text-2xl font-semibold text-center mb-4">Create Product</h2>
+    <form onSubmit={handleSubmit}>
         <br />
         <div>
-          <lable className="pb-2">
+          <label className="pb-2">
             Name <span className="text-red-500">*</span>
-          </lable>
+          </label>
           <input
             type="text"
             name="name"
             value={name}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none"
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your product name"
           />
         </div>
         <br />
         <div>
-          <lable className="pb-2">
+          <label className="pb-2">
             Description <span className="text-red-500">*</span>
-          </lable>
+          </label>
 
           <input
             type="text"
@@ -254,11 +191,10 @@ console.log("User", user)
             {imageUrl &&
               imageUrl.map((i) => (
                 <img
-                  src={URL.createObjectURL(i)}
-                  key={i}
-                  alt=""
-                  className="h-[120px] w-[120px] object-cover m-2"
-                />
+      src={URL.createObjectURL(imageUrl[imageUrl.length - 1])}
+      alt=""
+      className="h-[120px] w-[120px] object-cover m-2"
+    />
               ))}
           </div>
         </div>
@@ -271,6 +207,7 @@ console.log("User", user)
           />
         </div>
       </form>
+    </div>
     </div>
   );
 };

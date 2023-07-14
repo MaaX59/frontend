@@ -4,6 +4,7 @@ import {server} from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
 import SearchProduct from "../SearchProduct.jsx";
 import ProfileNavBar from "../ProfileNavBar.jsx";
+import Navbar from "../navbar.jsx";
 
 function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -48,6 +49,7 @@ function AllProducts() {
 
   return (
     <div>
+    <Navbar handleFilterByCategory={handleFilterByCategory} />
        <ProfileNavBar handleFilterByCategory={handleFilterByCategory}  />
          <SearchProduct handleSearch={handleSearch} />
         <div className="flex flex-wrap bg-gray-100">
