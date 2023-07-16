@@ -1,5 +1,5 @@
 import { React, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
@@ -23,7 +23,7 @@ const Signup = ({ props }) => {
   //   return;
   const handleFileUpload = (e) => {
     const uploadData = new FormData();
-    uploadData.append("avatar", e.target.files);
+    uploadData.append("avatar", e.target.files[0]);
 
     service
       .uploadImage(uploadData)
@@ -41,12 +41,10 @@ const Signup = ({ props }) => {
       setIsExistingUser(true);
     } else
     {
-      if (e.target.avatar && e.target.avatar.files) {
-        uploadData.append("name", name);
-        uploadData.append("email", email);
-        uploadData.append("password", password);
-        uploadData.append("avatar", e.target.avatar.files);
-      }
+      uploadData.append("name", name);
+      uploadData.append("email", email);
+      uploadData.append("password", password);
+      uploadData.append("avatar", avatar);
    
   
    

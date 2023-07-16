@@ -4,7 +4,8 @@ import {server} from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
 import SearchProduct from "../SearchProduct.jsx";
 import ProfileNavBar from "../ProfileNavBar.jsx";
-import Navbar from "../navbar.jsx";
+import SellerCard from "./SellerCard.jsx";
+// import Navbar from "../navbar.jsx";
 
 function AllProducts() {
     const [products, setProducts] = useState([]);
@@ -49,21 +50,27 @@ function AllProducts() {
 
   return (
     <div>
-    <Navbar handleFilterByCategory={handleFilterByCategory} />
+    {/* <Navbar handleFilterByCategory={handleFilterByCategory} /> */}
        <ProfileNavBar handleFilterByCategory={handleFilterByCategory}  />
          <SearchProduct handleSearch={handleSearch} />
         <div className="flex flex-wrap bg-gray-100">
-       
-          {
-            filteredProducts.length > 0 ? (
-          filteredProducts.map((product, index) => (
-            <ProductCard product={product} key={index} />
-          ))
-        ) : (
-          products.map((product, index) => (
-           <ProductCard product={product} key={index} />
-      ))
-      )}
+        {
+  filteredProducts.length > 0 ? (
+    filteredProducts.map((product, index) => (
+      <div key={index}>
+        <ProductCard product={product} />
+        <SellerCard product={product} />
+      </div>
+    ))
+  ) : (
+    products.map((product, index) => (
+      <div key={index}>
+        <ProductCard product={product} />
+        <SellerCard product={product} />
+      </div>
+    ))
+  )
+}
         </div>
 
 

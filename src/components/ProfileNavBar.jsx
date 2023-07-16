@@ -16,6 +16,7 @@ import {
   RiHomeLine,
 } from "react-icons/ri";
 
+
 const categories = [
   {
     name: "Electronics",
@@ -74,6 +75,7 @@ function ProfileNavBar({ handleFilterByCategory }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   // const [selectedLink, setSelectedLink] = useState("");
+  const defaultImage = '/userImage.jpeg';
 
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
@@ -200,6 +202,15 @@ function ProfileNavBar({ handleFilterByCategory }) {
           </div>
 
           <div className="flex">
+
+          {user && (
+              <div className="relative px-2">
+                <div className="rounded-full overflow-hidden" style={{ width: 28, height: 28 }}>
+                  <img src={user.avatar || defaultImage} alt="User Avatar" className="object-cover w-full h-full" />
+                </div>
+              </div>
+            )}
+
             <div className="relative  px-2">
               <Link to="/wishlist">
                 <AiOutlineHeart

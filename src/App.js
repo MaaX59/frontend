@@ -11,6 +11,7 @@ import {
 import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
 import SellerDashboard from "./components/SellerDashboard";
+import UpdateProduct from "./components/Product/UpdateProducts";
 
 function App() {
   return (
@@ -34,7 +35,10 @@ function App() {
         </PrivatePage>}
         />
 
+
+
 <Route path="/seller-dashboard" element={<PrivatePage><SellerDashboard/></PrivatePage>} />
+<Route path="/updateproduct/:productName" element={<PrivatePage><UpdateProduct/></PrivatePage>} />
 
         <Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
       </Routes>

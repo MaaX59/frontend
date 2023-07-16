@@ -1,13 +1,15 @@
-import { React, useState, useContext } from "react";
-import axios from "axios";
-import { server } from "../../server";
-import { AuthContext } from "../../context/auth.context";
-// import { AiFillFileImage } from "react-icons/ai";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { server } from '../../server';
+
+import { Link } from 'react-router-dom';
 import service from "../../api/service";
-import { Link } from "react-router-dom";
+import ProfileNavBar from "../ProfileNavBar"
 
 
-const CreateProduct = () => {
+function UpdateProduct() {
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [updateError, setUpdateError] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -15,13 +17,18 @@ const CreateProduct = () => {
   const [seller, setSeller] = useState("");
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
-  // const [ratings, setRatings] = useState("");
-  // const [numberOfReviews, setNumberOfReviews] = useState("");
-  // const [review, setReview] = useState([]);
-
-  //const { isLoading, isLoggedIn } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
   
+  const [isFormFilled, setIsFormFilled] = useState(false);
+  const [product, setProduct] = useState({
+    name: '',
+    description: '',
+    price: 0,
+    images: [],
+    category: '',
+    stock: 0,
+    seller: ''
+  });
+
   const handleFileUpload = (e) => {
     // console.log("The file to be uploaded is: ", e.target.files[0]);
 
@@ -41,50 +48,38 @@ const CreateProduct = () => {
       .catch((err) => console.log("Error while uploading the file: ", err));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const uploadData = new FormData();
-
-    // imageUrl => this name has to be the same as in the model since we pass
-    // req.body to .create() method when creating a new movie in '/api/movies' POST route
-    uploadData.append("imageUrl", e.target.imageURL.files[0]);
-    uploadData.append("name", name);
-    uploadData.append("description", description);
-    uploadData.append("price", price);
-    uploadData.append("category", category);
-    uploadData.append("seller", user._id);
-    uploadData.append("stock", stock);
-    console.log("User", user)
-
-    console.log("product from frontend", uploadData);
-    const gotToken = localStorage.getItem("authToken");
-    axios
-      .post(`${server}/product/newproduct`, uploadData,  { headers: { authorization: `Bearer ${gotToken}` }})
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    setName("");
-    setPrice(0);
-    setDescription("");
-    setCategory("");
-    setImageUrl("");
-    setSeller("");
-    setStock(0);
-
+  useEffect(() => {
    
+    updateProduct();
+  }, []);
+
+ 
+  const gotToken = localStorage.getItem("authToken");
+  const updateProduct = async (e) => {
+   
+   if (isFormFilled) {
+   try{
+      const response = await axios.put(`${server}/product/:id`, { headers: { authorization: `Bearer ${gotToken}` }});
+      setProduct(response.data.product);
+      setUpdateSuccess(true);
+      setUpdateError(false);
+
+      console.log('Product updated:', response.data.product);
+    } catch (error) {
+      console.log('Error updating product:', error);
+      setUpdateSuccess(false);
+      setUpdateError(true);
+    }
+  }
   };
 
-
-
-return (
-  <div className="flex flex-col justify-center items-center h-screen">
-  <div className="w-full max-w-md mt-16">
-    <h2 className="text-2xl font-semibold text-center mb-4">Create Product</h2>
-    <form onSubmit={handleSubmit}>
+  return (
+    <div>
+    <ProfileNavBar/>
+    <div className=" flex flex-col items-center">
+    <div className="mt-20">
+    <h1 className="text-2xl font-bold mb-4 text-center">Update Product</h1>
+      <form onSubmit={updateProduct}>
         <br />
         <div>
           <label className="pb-2">
@@ -93,7 +88,7 @@ return (
           <input
             type="text"
             name="name"
-            value={name}
+            value={product.name}
             className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none"
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your product name"
@@ -203,19 +198,22 @@ return (
         <div>
           <input
             type="submit"
-            value="Create"
+            value="Update"
             className="mt-2 cursor-pointer appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none hover:ring-blue-500 hover:border-blue-500 sm:text-sm"
           />
         </div>
-       
       </form>
-    
-     
-    </div>
-    <Link to="/seller-dashboard" className="mt-20 text-blue-500">
+      </div>
+      
+      {updateSuccess && <p>Product updated successfully!</p>}
+      {updateError && <p>Error updating product.</p>}
+
+      <Link to="/seller-dashboard" className="mt-4 text-blue-500">
         Go to Seller Dashboard
       </Link>
     </div>
+    </div>
   );
-};
-export default CreateProduct;
+}
+
+export default UpdateProduct;
