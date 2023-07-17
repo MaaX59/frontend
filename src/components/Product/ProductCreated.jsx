@@ -20,6 +20,7 @@ function ProductCreated() {
         headers: { authorization: `Bearer ${gotToken}` },
       });
       console.log("response", response.data);
+      
       setProducts(response.data.products);
     } catch (error) {
       console.log("Error fetching created products:", error);
