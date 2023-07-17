@@ -24,6 +24,7 @@ function Wishlist() {
             // console.log("wishlist",elem.wishlist,"product.id",product._id)
             if (elem.wishlist.length >= 1) {
               return setWishlist(elem.wishlist);
+              
             }
           }
         });
@@ -33,11 +34,11 @@ function Wishlist() {
     }
   };
 
-  console.log("fetch wish", wishlist);
+  
 
   return (
-    <div className="fixed top-19 left-0 w-full bg-[#ffffffea] h-screen">
-      <div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm">
+    <div className="fixed top-1 left-1 w-full bg-[#ffffffea] h-screen">
+      <div className="h-full w-full mt-[60px] overflow-y-scroll bg-white flex flex-col shadow-sm">
         
             {wishlist.map((data=> 
             <SingleWishlistItem data={data} />
