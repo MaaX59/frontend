@@ -10,7 +10,7 @@ const Signup = ({ props }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState("");
 
   const navigate = useNavigate();
   const { user, setToken, authenticateUser, setIsLoggedIn } =
@@ -26,8 +26,9 @@ const Signup = ({ props }) => {
     uploadData.append("avatar", e.target.files[0]);
 
     service
-      .uploadImage(uploadData)
+      .uploadAvatar(uploadData)
       .then((response) => {
+        console.log("image should be here",response)
         setAvatar(response.fileUrl);
       })
       .catch((err) => console.log("Error while uploading the file: ", err));
@@ -44,7 +45,7 @@ const Signup = ({ props }) => {
       uploadData.append("name", name);
       uploadData.append("email", email);
       uploadData.append("password", password);
-      uploadData.append("avatar", avatar);
+      uploadData.append("avatar", e.target.imageURL);
    
   
    
@@ -72,7 +73,7 @@ const Signup = ({ props }) => {
       setEmail("");
       setName("");
       setPassword("");
-      setAvatar(null);
+      setAvatar("");
     }
   };
 
@@ -153,9 +154,9 @@ const Signup = ({ props }) => {
                   <span>Upload a file</span>
                   <input
                     type="file"
-                    name="avatar"
-                    id="file-input"
-                    accept=".jpg,.jpeg,.png"
+                    name="avatarURL"
+                    id="upload"
+                    // accept=".jpg,.jpeg,.png"
                     onChange={handleFileUpload}
                     className="sr-only"
                   />
