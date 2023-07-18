@@ -4,7 +4,7 @@ import { server } from "../../server";
 import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { AuthContext } from "../../context/auth.context.jsx";
 
-function SingleWishlistItem({ data }) {
+function SingleWishlistItem({ data, setWishlist }) {
   const [products, setProducts] = useState([]);
   const [singleItem, setSingeleItem] = useState([]);
   const { user } = useContext(AuthContext);
@@ -26,16 +26,21 @@ function SingleWishlistItem({ data }) {
     }
   };
 
-  const removeFromWishlist = () => {
+  const removeFromWishlist =async (productId) => {
     const userId = user._id;
-    const productId = data;
-    
-    axios
-      .delete(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
+   // const productId = data;
+   console.log(productId)
 
-      .catch(function (error) {
+   try{
+    const {data }= await axios.get(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
+    setWishlist(data.updatedUser.wishlist)
+    console.log("This is your new data", data);
+   } 
+    
+
+      catch(error) {
         console.log("error while trying to post wishlist", error);
-      });
+      };
   };
 
   return (
@@ -69,7 +74,7 @@ function SingleWishlistItem({ data }) {
                 size={20}
                 color="red"
                 title="Remove from Wishlist"
-                onClick={removeFromWishlist}
+                onClick={()=>removeFromWishlist(singleItem._id)}
                 className="ml-5 mr-5 cursor-pointer"
               />
             </div>

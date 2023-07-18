@@ -1,4 +1,4 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
@@ -16,135 +16,55 @@ const Signup = ({ props }) => {
   const [avatar, setAvatar] = useState(null);
 
   const navigate = useNavigate();
-  const { user, setToken, authenticateUser, setIsLoggedIn } =
+  const { user, setUser, setToken, authenticateUser, setIsLoggedIn } =
     useContext(AuthContext);
   const [isExistingUser, setIsExistingUser] = useState(false);
 
-  // else if (!passwordPattern.test(password)) {
-  //   setPasswordError(true);
-  //   return;
-  // const handleFileUpload = (e) => {
-  //   const uploadData = new FormData();
-  //   uploadData.append("avatar", e.target.files[0]);
-
-  //   serviceSignUpImage
-  //     .uploadSignUpImage(uploadData)
-  //     .then((response) => {
-  //       setAvatar(response.fileUrl);
-  //     })
-  //     .catch((err) => console.log("Error while uploading the file: ", err));
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const uploadData = new FormData();
-  // //  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
-  //   if (user && user.email === email) {
-  //     setIsExistingUser(true);
-  //   } else
-  //   {
-  //     uploadData.append("name", name);
-  //     uploadData.append("email", email);
-  //     uploadData.append("password", password);
-  //     uploadData.append("avatar", e.target.avatar.files[0]);
-
-  //     console.log("new user", uploadData);
-
-  //     axios
-  //       .post(`${server}/user/signup`, uploadData)
-  //       .then((res) => {
-  //         console.log(res, "<===");
-  //         const actualToken = res.data.authToken;
-  //         setToken(actualToken);
-  //         authenticateUser();
-  //         setIsLoggedIn(true);
-  //         navigate("/profile");
-
-  //       })
-  //       .catch((err) => {
-  //         if (err.response && err.response.status === 400) {
-  //           setIsExistingUser(true);
-  //         } else {
-  //           console.log('Error:', err);
-  //         }
-  //       });
-
-  //     setEmail("");
-  //     setName("");
-  //     setPassword("");
-  //     setAvatar(null);
-  //   }
-  // };
   const handleFileUpload = (e) => {
     setAvatar(e.target.files[0]);
+   // console.log("Avatar value:", avatar);
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+   
+    console.log("Avatar value:", avatar);
+  }, [avatar]);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const uploadData = new FormData();
 
-    // Append form data
-
-    if (user && user.email === email) {
-      setIsExistingUser(true);
-    } else {
+    // if (user && user.email === email) {
+    //   setIsExistingUser(true);
+    // } else {
       uploadData.append("name", name);
       uploadData.append("email", email);
       uploadData.append("password", password);
-
-      if (avatar) {
-        // Append avatar file if available
-        uploadData.append("avatar", avatar);
+      uploadData.append("avatar", avatar);
+      try {
+        const res = await axios.post(`${server}/user/signup`, uploadData);
+        console.log(res, "<===");
+        const actualToken = res.data.authToken;
+        setUser(res.data.payload)
+        setToken(actualToken);
+        authenticateUser();
+        setIsLoggedIn(true);
+        navigate("/profile");
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          setIsExistingUser(true);
+        } else {
+          console.log('Error:', err);
+        }
       }
+    // }
 
-      // Use the service API to upload the data
-      serviceSignUpImage
-        .uploadSignUpImage(uploadData)
-        .then((response) => {
-          // Handle successful response
-          //console.log("Response:", response);
-          const actualToken = response.data.authToken;
-          setToken(actualToken);
-          authenticateUser();
-          setIsLoggedIn(true);
-          navigate("/profile");
-        })
-        .catch((error) => {
-          // Handle error
-          console.error("Error:", error);
-          if (error.response && error.response.status === 400) {
-            setIsExistingUser(true);
-          } else {
-            console.log('Error:', error);
-          }
-        });
-    }
-
-    // axios
-    //       .post(`${server}/user/signup`, uploadData)
-    //       .then((res) => {
-    //         console.log(res, "<===");
-    //         const actualToken = res.data.authToken;
-    //         setToken(actualToken);
-    //         authenticateUser();
-    //         setIsLoggedIn(true);
-    //         navigate("/profile");
-  
-    //       })
-    //       .catch((err) => {
-    //         if (err.response && err.response.status === 400) {
-    //           setIsExistingUser(true);
-    //         } else {
-    //           console.log('Error:', err);
-    //         }
-    //       });
-
-    // Clear form fields after submission
     setName("");
     setEmail("");
     setPassword("");
     setAvatar(null);
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -223,10 +143,10 @@ const Signup = ({ props }) => {
                   <input
                     type="file"
                     name="avatar"
-                    // id="file-input"
+                     id="file-input"
                     accept=".jpg,.jpeg,.png"
                     onChange={handleFileUpload}
-                    // className="sr-only"
+                    //className="sr-only"
                   />
                 </label>
               </div>

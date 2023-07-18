@@ -14,6 +14,8 @@ function SellerCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+
+  
  
 
   const { user } = useContext(AuthContext);
@@ -50,6 +52,21 @@ function SellerCard({ product }) {
   useEffect(() => {
     fetchUserModel();
   }, [fetchUserModel]);
+
+  const DeleteProduct = async (productId) => {
+    const gotToken = localStorage.getItem("authToken");
+
+    try {
+      const response = await axios.delete(`${server}/product/${productId}`, {
+        headers: { authorization: `Bearer ${gotToken}` },
+      });
+      if (response.status === 200) {
+        // Product successfully deleted, perform any necessary actions
+      }
+    } catch (error) {
+      console.log("Error deleting product:", error);
+    }
+  };
 
   return (
     <>
@@ -96,6 +113,7 @@ function SellerCard({ product }) {
             size={25}
             className="cursor-pointer absolute right-1 top-24"
             color="#444"
+            onClick={() => DeleteProduct()}
             title="Delete Product"
           />
             <Link to={`/updateproduct/${productName}`}>

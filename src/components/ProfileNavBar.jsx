@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import {
   RiArrowDropDownLine,
   RiComputerLine,
@@ -15,6 +15,7 @@ import {
   RiBikeLine,
   RiHomeLine,
 } from "react-icons/ri";
+
 
 
 const categories = [
@@ -70,6 +71,9 @@ const categories = [
 
 function ProfileNavBar({ handleFilterByCategory }) {
   const { logOutUser, user } = useContext(AuthContext);
+
+  //console.log("user",user);
+
   const [click, setClick] = useState(false);
   const dropdownRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -77,8 +81,12 @@ function ProfileNavBar({ handleFilterByCategory }) {
   // const [selectedLink, setSelectedLink] = useState("");
   const defaultImage = '/userImage.jpeg';
 
+  //console.log(user);
+  
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+
+  
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -146,6 +154,8 @@ function ProfileNavBar({ handleFilterByCategory }) {
       setWishlistCount(user.wishlist ? user.wishlist.length : 0);
     }
   }, [user]);
+
+  
 
   return (
     <nav className="bg-blue-700 fixed top-0 left-0 w-full z-10">
@@ -237,6 +247,15 @@ function ProfileNavBar({ handleFilterByCategory }) {
               <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-blue-500 rounded-full text-white text-xs px-1">
                 {cartCount}
               </span>
+            </div>
+
+            <div className="relative  px-2">
+              <Link to="/user-settings">
+              <AiOutlineUser size={25} className="cursor-pointer" color="black" title="User Settings" />
+                {/* <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-blue-500 rounded-full text-white text-xs px-1">
+                  {wishlistCount}
+                </span> */}
+              </Link>
             </div>
           </div>
         </div>

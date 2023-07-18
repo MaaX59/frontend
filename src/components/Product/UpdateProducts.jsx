@@ -22,11 +22,10 @@ function UpdateProduct() {
   const [product, setProduct] = useState({
     name: '',
     description: '',
-    price: 0,
-    images: [],
     category: '',
+    price: 0,
     stock: 0,
-    seller: ''
+    images: []
   });
 
   const handleFileUpload = (e) => {
@@ -57,7 +56,7 @@ function UpdateProduct() {
   const gotToken = localStorage.getItem("authToken");
   const updateProduct = async (e) => {
    
-   if (isFormFilled) {
+   if (!isFormFilled) {
    try{
       const response = await axios.put(`${server}/product/:id`, { headers: { authorization: `Bearer ${gotToken}` }});
       setProduct(response.data.product);
@@ -88,7 +87,7 @@ function UpdateProduct() {
           <input
             type="text"
             name="name"
-            value={product.name}
+            value={name}
             className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none"
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your product name"

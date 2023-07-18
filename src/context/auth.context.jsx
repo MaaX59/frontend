@@ -62,6 +62,7 @@ const AuthContextWrapper = (props) => {
         isLoggedIn,
         setIsLoggedIn,
         user,
+        setUser,
         logOutUser,
       }}
     >

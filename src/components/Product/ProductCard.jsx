@@ -37,22 +37,22 @@ function ProductCard({ product }) {
   const fetchUserModel = async () => {
     try {
       const currentUserEmail = user.email;
-      const response = await axios.get(`${server}/user/getuser`);
-
-      if (user) {
-        response.data.foundUser.map((elem) => {
-          if (elem.email === currentUserEmail) {
-            // console.log("wishlist",elem.wishlist,"product.id",product._id)
-            if (elem.wishlist.length >= 1) {
-              console.log(elem.wishlist);
-              elem.wishlist.map((wish) => {
-                return wish === product._id ? setClick(true) : null;
-                // return  wish===product._id ? console.log("product =",product._id,"match", wish) : console.log("product =",product._id,"do not match wishlist items", wish);
-              });
-            }
-          }
-        });
-      }
+      const response = await axios.get(`${server}/user/getuser/${user._id}`);
+   setCurrentUser(response.data.currentUser)
+      // if (user) {
+      //   response.data.foundUser.map((elem) => {
+      //     if (elem.email === currentUserEmail) {
+      //       // console.log("wishlist",elem.wishlist,"product.id",product._id)
+      //       if (elem.wishlist.length >= 1) {
+      //         console.log(elem.wishlist);
+      //         elem.wishlist.map((wish) => {
+      //           return wish === product._id ? setClick(true) : null;
+      //           // return  wish===product._id ? console.log("product =",product._id,"match", wish) : console.log("product =",product._id,"do not match wishlist items", wish);
+      //         });
+      //       }
+      //     }
+        // });
+      // }
     } catch (error) {
       console.error("Error fetching products:", error);
     }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { server } from "../../server.js";
 //import ProductCard from "./ProductCard.jsx";
 import SellerCard from "./SellerCard.jsx";
+import UpdateProduct from "./UpdateProducts.jsx";
 //import SearchProduct from "../SearchProduct.jsx";
 //import ProfileNavBar from "../ProfileNavBar.jsx";
 
@@ -30,7 +31,9 @@ function ProductCreated() {
     <div className=" mt-20 grid grid-cols-4 gap-4">
       {products.map((product, index) => (
         <SellerCard product={product} key={index} />
+        
       ))}
+    
     </div>
   );
 }

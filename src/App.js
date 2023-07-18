@@ -12,6 +12,7 @@ import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
 import SellerDashboard from "./components/SellerDashboard";
 import UpdateProduct from "./components/Product/UpdateProducts";
+import UserSettings from "./components/UserSettings";
 
 function App() {
   return (
@@ -34,15 +35,12 @@ function App() {
         <WishlistPage />
         </PrivatePage>}
         />
-
-
-
 <Route path="/seller-dashboard" element={<PrivatePage><SellerDashboard/></PrivatePage>} />
 <Route path="/updateproduct/:productName" element={<PrivatePage><UpdateProduct/></PrivatePage>} />
-
-        <Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
-      </Routes>
-    </BrowserRouter>
+<Route path="/user-settings" element={<PrivatePage><UserSettings/></PrivatePage>} />
+<Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
+</Routes>
+</BrowserRouter>
   );
 }
 

@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard.jsx";
 import SearchProduct from "../SearchProduct.jsx";
 import ProfileNavBar from "../ProfileNavBar.jsx";
 import SellerCard from "./SellerCard.jsx";
+import UpdateProduct from "./UpdateProducts.jsx";
 // import Navbar from "../navbar.jsx";
 
 function AllProducts() {
@@ -66,7 +67,8 @@ function AllProducts() {
     products.map((product, index) => (
       <div key={index}>
         <ProductCard product={product} />
-        <SellerCard product={product} />
+      
+      
       </div>
     ))
   )
