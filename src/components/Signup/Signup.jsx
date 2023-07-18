@@ -1,10 +1,13 @@
 import { React, useState, useContext } from "react";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { AuthContext } from "../../context/auth.context";
-import service from "../../api/service";
+
+
+
+import serviceSignUpImage from "../../api/serviceSignUpImage";
 
 const Signup = ({ props }) => {
   const [email, setEmail] = useState("");
@@ -17,63 +20,130 @@ const Signup = ({ props }) => {
     useContext(AuthContext);
   const [isExistingUser, setIsExistingUser] = useState(false);
 
-
   // else if (!passwordPattern.test(password)) {
   //   setPasswordError(true);
   //   return;
-  const handleFileUpload = (e) => {
-    const uploadData = new FormData();
-    uploadData.append("avatar", e.target.files[0]);
+  // const handleFileUpload = (e) => {
+  //   const uploadData = new FormData();
+  //   uploadData.append("avatar", e.target.files[0]);
 
-    service
-      .uploadImage(uploadData)
-      .then((response) => {
-        setAvatar(response.fileUrl);
-      })
-      .catch((err) => console.log("Error while uploading the file: ", err));
+  //   serviceSignUpImage
+  //     .uploadSignUpImage(uploadData)
+  //     .then((response) => {
+  //       setAvatar(response.fileUrl);
+  //     })
+  //     .catch((err) => console.log("Error while uploading the file: ", err));
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const uploadData = new FormData();
+  // //  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+  //   if (user && user.email === email) {
+  //     setIsExistingUser(true);
+  //   } else
+  //   {
+  //     uploadData.append("name", name);
+  //     uploadData.append("email", email);
+  //     uploadData.append("password", password);
+  //     uploadData.append("avatar", e.target.avatar.files[0]);
+
+  //     console.log("new user", uploadData);
+
+  //     axios
+  //       .post(`${server}/user/signup`, uploadData)
+  //       .then((res) => {
+  //         console.log(res, "<===");
+  //         const actualToken = res.data.authToken;
+  //         setToken(actualToken);
+  //         authenticateUser();
+  //         setIsLoggedIn(true);
+  //         navigate("/profile");
+
+  //       })
+  //       .catch((err) => {
+  //         if (err.response && err.response.status === 400) {
+  //           setIsExistingUser(true);
+  //         } else {
+  //           console.log('Error:', err);
+  //         }
+  //       });
+
+  //     setEmail("");
+  //     setName("");
+  //     setPassword("");
+  //     setAvatar(null);
+  //   }
+  // };
+  const handleFileUpload = (e) => {
+    setAvatar(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const uploadData = new FormData();
-  //  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+
+    // Append form data
+
     if (user && user.email === email) {
       setIsExistingUser(true);
-    } else
-    {
+    } else {
       uploadData.append("name", name);
       uploadData.append("email", email);
       uploadData.append("password", password);
-      uploadData.append("avatar", avatar);
-   
-  
-   
-      console.log("new user", uploadData);
 
-      axios
-        .post(`${server}/user/signup`, uploadData)
-        .then((res) => {
-          console.log(res, "<===");
-          const actualToken = res.data.authToken;
+      if (avatar) {
+        // Append avatar file if available
+        uploadData.append("avatar", avatar);
+      }
+
+      // Use the service API to upload the data
+      serviceSignUpImage
+        .uploadSignUpImage(uploadData)
+        .then((response) => {
+          // Handle successful response
+          //console.log("Response:", response);
+          const actualToken = response.data.authToken;
           setToken(actualToken);
           authenticateUser();
           setIsLoggedIn(true);
           navigate("/profile");
-        
         })
-        .catch((err) => {
-          if (err.response && err.response.status === 400) {    
+        .catch((error) => {
+          // Handle error
+          console.error("Error:", error);
+          if (error.response && error.response.status === 400) {
             setIsExistingUser(true);
           } else {
-            console.log('Error:', err);
+            console.log('Error:', error);
           }
         });
-
-      setEmail("");
-      setName("");
-      setPassword("");
-      setAvatar(null);
     }
+
+    // axios
+    //       .post(`${server}/user/signup`, uploadData)
+    //       .then((res) => {
+    //         console.log(res, "<===");
+    //         const actualToken = res.data.authToken;
+    //         setToken(actualToken);
+    //         authenticateUser();
+    //         setIsLoggedIn(true);
+    //         navigate("/profile");
+  
+    //       })
+    //       .catch((err) => {
+    //         if (err.response && err.response.status === 400) {
+    //           setIsExistingUser(true);
+    //         } else {
+    //           console.log('Error:', err);
+    //         }
+    //       });
+
+    // Clear form fields after submission
+    setName("");
+    setEmail("");
+    setPassword("");
+    setAvatar(null);
   };
 
   return (
@@ -85,7 +155,6 @@ const Signup = ({ props }) => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-      
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -150,14 +219,14 @@ const Signup = ({ props }) => {
                   )}
                 </span>
                 <label className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                  <span>Upload a file</span>
+                  <span></span>
                   <input
                     type="file"
                     name="avatar"
-                    id="file-input"
+                    // id="file-input"
                     accept=".jpg,.jpeg,.png"
                     onChange={handleFileUpload}
-                    className="sr-only"
+                    // className="sr-only"
                   />
                 </label>
               </div>
@@ -170,11 +239,9 @@ const Signup = ({ props }) => {
                 Submit
               </button>
             </div>
-            {isExistingUser && (
-        <p>Email already exists! Please Sign In</p>
-      )}
+            {isExistingUser && <p>Email already exists! Please Sign In</p>}
 
-      {/* {passwordError && (
+            {/* {passwordError && (
       <p>Password should be at least 6 characters long and contain at least one number and one special character.</p>
     )} */}
             <div className=" flex w-full">
