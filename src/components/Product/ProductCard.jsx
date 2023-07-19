@@ -16,54 +16,98 @@ import { server } from "../../server";
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cartClick, setCartClick] = useState(false);
+  const { isLoading, isLoggedIn } = useContext(AuthContext);
+  const [count, setCount] = useState(1)
 
   const [currentUser, setCurrentUser] = useState([]);
-
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     fetchUserModel();
-  }, []);
-  // const fetchUserModel=  ()=> {
-  //   try{
-  //      console.log("get user wishlist", GetUserWishlist )
 
-  //   }
-  //   catch(error){
-  //     console.error("Error fetching wishlist:", error);
-  //   }
-  // }
+  }, []);
+ 
 
   const fetchUserModel = async () => {
     try {
-      const currentUserEmail = user.email;
+      // const currentUserEmail = user.email;
       const response = await axios.get(`${server}/user/getuser/${user._id}`);
-   setCurrentUser(response.data.currentUser)
-      // if (user) {
-      //   response.data.foundUser.map((elem) => {
-      //     if (elem.email === currentUserEmail) {
-      //       // console.log("wishlist",elem.wishlist,"product.id",product._id)
-      //       if (elem.wishlist.length >= 1) {
-      //         console.log(elem.wishlist);
-      //         elem.wishlist.map((wish) => {
-      //           return wish === product._id ? setClick(true) : null;
-      //           // return  wish===product._id ? console.log("product =",product._id,"match", wish) : console.log("product =",product._id,"do not match wishlist items", wish);
-      //         });
-      //       }
-      //     }
-        // });
-      // }
+
+      setCurrentUser(response.data.foundUser);
+
+      if (user) {
+        if (response.data.foundUser.wishlist.length >= 1) {
+          response.data.foundUser.wishlist.map((wish) => {
+            return wish === product._id ? setClick(true) : null;
+          });
+          
+        }
+      }
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
+  // const fetchUserModel = async () => {
+  //   try {
+  //     const currentUserEmail = user.email;
+  //     const response = await axios.get(`${server}/user/getuser/${user._id}`);
+  //     setCurrentUser(response.data.currentUser);
+
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
+  // const alreadyWishedItems = async ()=>{
+  //   console.log("===>",currentUser)
+  // }
+
+  const handleCart = () => {
+    // const gotToken = localStorage.getItem("authToken");
+    // const response = await axios.get(${server}/product/newproduct, {
+    //   headers: { authorization: Bearer ${gotToken} },
+    // });
+
+    const userId = user._id;
+    const productId = product._id;
+    // const amount = 1;
+
+    if (!cartClick) {
+      isLoggedIn ? (
+        //console.log(userId,"added to cart");
+
+        axios
+          .put(
+            `${server}/cart/${userId}/cart/${productId}/${count}`
+            // ,{
+            //   headers: { authorization: Bearer ${gotToken} },
+            // }
+          )
+          .then(setCartClick(!cartClick))
+          .catch(function (error) {
+            console.log("error while trying to post cart", error);
+          })
+      ) : (
+        <Link to="/login"></Link>
+      );
+    } else if (cartClick) {
+      axios
+        .delete(`${server}/cart/${userId}/cart/${productId}`)
+        .then(setCartClick(!cartClick))
+        .catch(function (error) {
+          console.log("error while trying to post cart", error);
+        });
+    }
+  };
+
   const handleWishlist = () => {
+    // const gotToken = localStorage.getItem("authToken");
     const userId = user._id;
     const productId = product._id;
 
     if (!click) {
-      userId ? (
+      isLoggedIn ? (
         // console.log(userId,"added to wishlist", product._id)
 
         axios
@@ -136,7 +180,10 @@ function ProductCard({ product }) {
 
         {/* Side Option */}
         <div>
-          {click ? (
+
+          {user ?(
+          click ? (
+            
             <AiFillHeart
               size={22}
               className="cursor-pointer absolute right-1 top-5"
@@ -152,7 +199,9 @@ function ProductCard({ product }) {
               color={click ? "red" : "black"}
               title="Add to wishlist"
             />
-          )}
+          )) : null
+          }
+
           <AiOutlineEye
             size={22}
             className="cursor-pointer absolute right-1 top-14"
@@ -160,13 +209,18 @@ function ProductCard({ product }) {
             color="black"
             title="Quick View"
           />
+          {user?
+
           <AiOutlineShoppingCart
             size={25}
             className="cursor-pointer absolute right-1 top-24"
-            // onClick={() => setOpen(!open)}
-            color="#444"
+            onClick={handleCart}
+            color={cartClick ? "red" : "black"}
             title="Add to cart"
           />
+          :null
+          }
+
           {open ? (
             <ProductDetailsCard
               handleWishlist={handleWishlist}
@@ -174,6 +228,11 @@ function ProductCard({ product }) {
               product={product}
               setClick={setClick}
               click={click}
+              user={user}
+              handleCart={handleCart}
+              count={count}
+              setCount={setCount}
+              
             />
           ) : null}
         </div>

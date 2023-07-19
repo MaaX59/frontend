@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from "react";
+import {React, useEffect, useState,useContext} from "react";
 import axios from "axios";
 import {server} from "../../server.js";
 import ProductCard from "./ProductCard.jsx";
@@ -6,7 +6,8 @@ import SearchProduct from "../SearchProduct.jsx";
 import Navbar from "../navbar.jsx";
 import Footer from "../Footer.jsx";
 import Pagination from "react-js-pagination";
-
+import ProfileNavBar from "../ProfileNavBar.jsx";
+import { AuthContext } from "../../context/auth.context.jsx";
 
 
 function HomePageComponent() {
@@ -15,6 +16,8 @@ function HomePageComponent() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10;
+
+  const { user } = useContext(AuthContext);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -64,7 +67,12 @@ useEffect(() => {
 return (
   <div>
 
-     <Navbar handleFilterByCategory={handleFilterByCategory}  />
+{user ? (
+        <ProfileNavBar handleFilterByCategory={handleFilterByCategory} />
+      ) : (
+        <Navbar handleFilterByCategory={handleFilterByCategory} />
+      )}
+  />
        <SearchProduct handleSearch={handleSearch} />
       <div className="flex flex-wrap bg-gray-100">
      

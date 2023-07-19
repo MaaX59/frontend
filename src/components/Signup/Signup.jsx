@@ -138,7 +138,7 @@ const Signup = ({ props }) => {
                     <RxAvatar className="h-8 w-8" />
                   )}
                 </span>
-                <label className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <label className=" flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                   <span></span>
                   <input
                     type="file"

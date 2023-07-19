@@ -3,6 +3,7 @@ import axios from "axios";
 import {server} from "../server";
 import ProductCard from "../components/Product/ProductCard";
 import SearchProduct from "../components/SearchProduct";
+import SellerDashboard from "../components/SellerDashboard"
 
 import Footer from "../components/Footer";
 import Pagination from "react-js-pagination";
@@ -65,7 +66,8 @@ return (
   <div>
 
      <ProfileNavBar />
-       <SearchProduct handleSearch={handleSearch} />
+     <SellerDashboard />
+       {/* <SearchProduct handleSearch={handleSearch} />
       <div className="flex flex-wrap bg-gray-100">
      
       {
@@ -82,7 +84,7 @@ return (
   )
 }
 
-      </div>
+      </div> */}
       <div className="flex justify-center mt-5 flex-row">
         <Pagination
           activePage={currentPage}

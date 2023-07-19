@@ -7,9 +7,19 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 
-function ProductDetailsCard({ setOpen, product, setClick, click, handleWishlist }) {
-  const [count, setCount] = useState(1);
-  
+function ProductDetailsCard({
+  setOpen,
+  product,
+  setClick,
+  click,
+  handleWishlist,
+  user,
+  handleCart,
+  count,
+  setCount,
+}) {
+  // const [count, setCount] = useState(1);
+
   const [select, setSelect] = useState(false);
 
   const countDown = () => {
@@ -35,7 +45,11 @@ function ProductDetailsCard({ setOpen, product, setClick, click, handleWishlist 
               <div className="w-full 800px:w-[50%]">
                 <img // src={product.images[0].image}
                   //src={`${server}${product.images && product.images[0]}`}
-                  src={product.images ?product.images[0]  : "https://erp.netbizde.com/cdn/static/products/default.jpg" }
+                  src={
+                    product.images
+                      ? product.images[0]
+                      : "https://erp.netbizde.com/cdn/static/products/default.jpg"
+                  }
                   alt={product.name}
                 />
                 <div className="flex">
@@ -67,50 +81,54 @@ function ProductDetailsCard({ setOpen, product, setClick, click, handleWishlist 
                     {product.price + "$"}{" "}
                   </h3>
                 </div>
-                <div className="flex">
-                  <button
-                    className="bg-gradient-to-t from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
-                    onClick={countDown}
-                  >
-                    -
-                  </button>
-                  <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
-                    {count}
-                  </span>
-                  <button
-                    className="bg-gradient-to-t from-teal-400 to-teal-500 text-white font-bold rounded-r px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
-                    onClick={countUp}
-                  >
-                    +
-                  </button>
-                  {click ? (
-                    <AiFillHeart
-                      size={22}
-                      className="cursor-pointer "
-                      onClick={handleWishlist}
-                      color={click ? "red" : "black"}
-                      title="Remove from wishlist"
-                    />
-                  ) : (
-                    <AiOutlineHeart
-                      size={22}
-                      className="cursor-pointer"
-                      onClick={handleWishlist}
-                      color={click ? "red" : "black"}
-                      title="Add to wishlist"
-                    />
-                  )}
-                </div><div className="w-[150px] bg-black my-3 mt-6 h-11 flex items-center justify-center rounded-[4px]">
-                <span className="text-white flex items-center">
-                  Add to cart <AiOutlineShoppingCart className="ml-l" />
-                </span>
-              </div>
+
+                {user ? (
+                  <div className="flex">
+                    <button
+                      className="bg-gradient-to-t from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
+                      onClick={countDown}
+                    >
+                      -
+                    </button>
+                    <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
+                      {count}
+                    </span>
+                    <button
+                      className="bg-gradient-to-t from-teal-400 to-teal-500 text-white font-bold rounded-r px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out "
+                      onClick={countUp}
+                    >
+                      +
+                    </button>
+
+                    {click ? (
+                      <AiFillHeart
+                        size={22}
+                        className="cursor-pointer "
+                        onClick={handleWishlist}
+                        color={click ? "red" : "black"}
+                        title="Remove from wishlist"
+                      />
+                    ) : (
+                      <AiOutlineHeart
+                        size={22}
+                        className="cursor-pointer"
+                        onClick={handleWishlist}
+                        color={click ? "red" : "black"}
+                        title="Add to wishlist"
+                      />
+                    )}
+                  </div>
+                ) : null}
+                {user ? (
+                  <div onClick={handleCart} className="w-[150px] bg-black my-3 mt-6 h-11 flex items-center justify-center rounded-[4px]">
+                    <span className="text-white flex items-center">
+                      Add to cart <AiOutlineShoppingCart  className="ml-l" />
+                    </span>
+                  </div>
+                ) : null}
               </div>
               <div className="flex items-center mt-12 justify-between pr-3"></div>
-
-              
-            </div> 
-            
+            </div>
           </div>
         </div>
       ) : null}
