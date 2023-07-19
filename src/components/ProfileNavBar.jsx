@@ -109,7 +109,9 @@ function ProfileNavBar({ handleFilterByCategory }) {
   const renderCategoryButtons = () => {
     return (
       <>
+      
         <div className="relative inline-block">
+       
           <button
             onClick={handleCategoryDropdownToggle}
             className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-md"

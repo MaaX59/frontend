@@ -131,6 +131,7 @@ function Navbar({handleFilterByCategory}) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex">
+          <img src="/Deal (2).png" alt="Logo" className="h-10 w-auto mr-2" />
             <div className="ml-4 relative" ref={dropdownRef}>
             <button
                 className="flex items-center text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
