@@ -4,37 +4,45 @@ import { server } from "../../server";
 import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { AuthContext } from "../../context/auth.context.jsx";
 
-function SingleWishlistItem({ data, setWishlist }) {
-  const [products, setProducts] = useState([]);
-  const [singleItem, setSingeleItem] = useState([]);
+function SingleWishlistItem({ product }) {
+  // const [products, setProducts] = useState([]);
+  // const [singleItem, setSingeleItem] = useState([]);
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${server}/product/allproducts`);
-      // setProducts(response.data.productsFromDb);
-      console.log("this is the product list", response.data);
-      response.data.productsFromDb.map((product) =>
-        product._id === data ? setSingeleItem(product) : null
-      );
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await axios.get(`${server}/product/allproducts`);
+  //     // setProducts(response.data.productsFromDb);
+  //     console.log("this is the wishlist", response.data);
+  //     response.data.productsFromDb.map((product) =>{
+  //     if(product._id === data){
+  //       setSingeleItem(product)
+  //       console.log(singleItem)
+  //     }
+  //         }
+  //     );
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
 
-  const removeFromWishlist =async (productId) => {
+  const removeFromWishlist = async () => {
     const userId = user._id;
+    const productId = product._id;
    // const productId = data;
-   console.log(productId)
+   console.log("want to delete",product.name)
 
    try{
-    const {data }= await axios.get(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
-    setWishlist(data.updatedUser.wishlist)
-    console.log("This is your new data", data);
+    // const {data }= 
+    await axios.delete(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
+    window.location.reload(false);
+
+    // setWishlist(data.updatedUser.wishlist)
+    // console.log("This is your new data", data);
    } 
     
 
@@ -49,24 +57,24 @@ function SingleWishlistItem({ data, setWishlist }) {
         <div className="flex justify-between align-baseline items-center w-[1100px]">
           <img
             src={
-              singleItem.images
-                ? singleItem.images[0]
+              product.images
+                ? product.images[0]
                 : "https://erp.netbizde.com/cdn/static/products/default.jpg"
             }
-            alt={singleItem.name}
+            alt={product.name}
             className=" flex h-[48px] rounded-sm ml-2 mr-2 "
           ></img>
           <h2 className="w-[300px] font-[600] font-Roboto text-[#333]">
-            {singleItem.name}
+            {product.name}
           </h2>
           <h4 className="ml-5 ">
-            {singleItem &&
-            singleItem.description &&
-            singleItem.description.length > 30
-              ? singleItem.description.slice(0, 30) + "..."
-              : singleItem.description}
+            {product &&
+            product.description &&
+            product.description.length > 30
+              ? product.description.slice(0, 30) + "..."
+              : product.description}
           </h4>
-          <h6>{singleItem.price + "$"}</h6>
+          <h6>{product.price + "$"}</h6>
 
           <div className="flex align-baseline items-center">
             <div className="flex">
@@ -74,7 +82,7 @@ function SingleWishlistItem({ data, setWishlist }) {
                 size={20}
                 color="red"
                 title="Remove from Wishlist"
-                onClick={()=>removeFromWishlist(singleItem._id)}
+                onClick={removeFromWishlist}
                 className="ml-5 mr-5 cursor-pointer"
               />
             </div>

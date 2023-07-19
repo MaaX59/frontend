@@ -85,7 +85,7 @@ return (
 }
 
       </div> */}
-      <div className="flex justify-center mt-5 flex-row">
+      {/* <div className="flex justify-center mt-5 flex-row">
         <Pagination
           activePage={currentPage}
           itemsCountPerPage={itemsPerPage}
@@ -101,7 +101,7 @@ return (
           itemClassNext="next"
           itemClassPrev="prev"
         />
-      </div> 
+      </div>  */}
 
      
       <Footer/>

@@ -15,6 +15,8 @@ import {
   RiBikeLine,
   RiHomeLine,
 } from "react-icons/ri";
+import axios from "axios";
+import { server } from "../server";
 
 
 
@@ -70,9 +72,10 @@ const categories = [
 ];
 
 function ProfileNavBar({ handleFilterByCategory }) {
-  const { logOutUser, user } = useContext(AuthContext);
+  const { user ,logOutUser } = useContext(AuthContext);
 
   //console.log("user",user);
+  
 
   const [click, setClick] = useState(false);
   const dropdownRef = useRef(null);
@@ -85,6 +88,19 @@ function ProfileNavBar({ handleFilterByCategory }) {
   
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+
+  const wishlistLength = async (user)=>{
+    try{
+      const response = await axios.get(`${server}/user/getuser/${user._id}`)
+    
+    const length = response.data.foundUser.wishlist.length;
+     setWishlistCount(length);
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
+  wishlistLength(user)
 
   
 
@@ -150,12 +166,12 @@ function ProfileNavBar({ handleFilterByCategory }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      setCartCount(user.cart ? user.cart.length : 0);
-      setWishlistCount(user.wishlist ? user.wishlist.length : 0);
-    }
-  }, [user]);
+  // useEffect(() => {
+    
+  //     // setCartCount(user.cart ? user.cart.length : 0);
+  //     // setWishlistCount(user.wishlist ? user.wishlist.length : 0);
+    
+  // }, []);
 
   
 
