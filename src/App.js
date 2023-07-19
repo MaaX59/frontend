@@ -7,12 +7,14 @@ import {
   SignupPage,
   CreateProductPage,
   WishlistPage,
+  
 } from "./routes.js";
 import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
 import SellerDashboard from "./components/SellerDashboard";
 import UpdateProduct from "./components/Product/UpdateProducts";
 import UserSettings from "./components/UserSettings";
+import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={ <SignupPage /> } />
+        <Route path="/cart" element={<ShoppingCart />} />
 
         <Route
           path="/profile"

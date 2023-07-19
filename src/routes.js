@@ -5,8 +5,9 @@ import HomePage from "./pages/HomePage.jsx";
 import WishlistPage from "./pages/WishlistPage.jsx";
 
 
+
 export {
-    WishlistPage, HomePage ,LoginPage, SignupPage, CreateProductPage
+    WishlistPage, HomePage ,LoginPage, SignupPage, CreateProductPage, 
 };
 
 

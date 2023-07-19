@@ -71,15 +71,18 @@ function ProductCard({ product }) {
 
     const userId = user._id;
     const productId = product._id;
+    
+    const productToCart = product;
+    productToCart.amount=count;
     // const amount = 1;
-
+console.log("added to cart", productToCart);
     if (!cartClick) {
       isLoggedIn ? (
-        //console.log(userId,"added to cart");
+        
 
         axios
           .put(
-            `${server}/cart/${userId}/cart/${productId}/${count}`
+            `${server}/cart/${userId}/cart/${productId}/${count}`,productToCart
             // ,{
             //   headers: { authorization: Bearer ${gotToken} },
             // }

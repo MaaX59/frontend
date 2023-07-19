@@ -255,6 +255,7 @@ function ProfileNavBar({ handleFilterByCategory }) {
             </div>
 
             <div className="relative  px-2">
+              <Link to="/cart">
               <AiOutlineShoppingCart
                 size={25}
                 className="cursor-pointer"
@@ -265,6 +266,7 @@ function ProfileNavBar({ handleFilterByCategory }) {
               <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-blue-500 rounded-full text-white text-xs px-1">
                 {cartCount}
               </span>
+              </Link>
             </div>
 
             <div className="relative  px-2">
