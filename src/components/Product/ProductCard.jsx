@@ -16,6 +16,7 @@ import { server } from "../../server";
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cartClick, setCartClick] = useState(false);
 
   const [currentUser, setCurrentUser] = useState([]);
 
@@ -58,6 +59,35 @@ function ProductCard({ product }) {
     }
   };
 
+  const handleCart = () => {
+    const userId = user._id;
+    const productId = product._id;
+    const amount = 1;
+
+    if (!cartClick) {
+      userId ? (
+        //console.log(userId,"added to cart");
+
+        axios
+          .put(`${server}/cart/${userId}/cart/${productId}/${amount}`)
+          .then(setCartClick(!cartClick))
+          .catch(function (error) {
+            console.log("error while trying to post cart", error);
+          })
+      ) : (
+        <Link to="/login"></Link>
+      );
+    } else if (cartClick) {
+      console.log("removed from cart");
+
+      axios
+        .delete(`${server}/cart/${userId}/cart/${productId}`)
+        .then(setCartClick(!cartClick))
+        .catch(function (error) {
+          console.log("error while trying to post cart", error);
+        });
+    }
+  };
   const handleWishlist = () => {
     const userId = user._id;
     const productId = product._id;
@@ -163,8 +193,8 @@ function ProductCard({ product }) {
           <AiOutlineShoppingCart
             size={25}
             className="cursor-pointer absolute right-1 top-24"
-            // onClick={() => setOpen(!open)}
-            color="#444"
+            onClick={handleCart}
+            color={cartClick ? "red" : "black"}
             title="Add to cart"
           />
           {open ? (

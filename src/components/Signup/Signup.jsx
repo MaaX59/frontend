@@ -26,7 +26,7 @@ const Signup = ({ props }) => {
     uploadData.append("avatar", e.target.files[0]);
 
     service
-      .uploadAvatar(uploadData)
+      .uploadImage(uploadData)
       .then((response) => {
         console.log("image should be here",response)
         setAvatar(response.fileUrl);
