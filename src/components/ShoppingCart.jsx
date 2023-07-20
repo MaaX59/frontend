@@ -77,7 +77,7 @@ return Math.round(sum);
                     {cartItem.name}
                   </h2>
                   <h3>{cartItem.price}$</h3>
-                  <h3>X{cartItem.amount}</h3>
+                  <h3>Quantity:{cartItem.amount}</h3>
                   <h3>{cartItem.price*cartItem.amount}$</h3>
                   </div></div>
                 

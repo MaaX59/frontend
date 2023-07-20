@@ -11,23 +11,23 @@ import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
 import { AuthContext } from "../../context/auth.context.jsx";
 import { server } from "../../server";
+// import PopupAfterPurchase from "./PopupAfterPurchase.jsx";
 // import GetUserWishlist from "../GetUserWishlist.jsx";
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [cartClick, setCartClick] = useState(false);
-  const { isLoading, isLoggedIn } = useContext(AuthContext);
-  const [count, setCount] = useState(1)
+
+  const [count, setCount] = useState(1);
+  // const [popupOpen, setPopupOpen] = useState(false);
 
   const [currentUser, setCurrentUser] = useState([]);
   const { user } = useContext(AuthContext);
-
+  const { isLoading, isLoggedIn } = useContext(AuthContext);
   useEffect(() => {
     fetchUserModel();
-
   }, []);
- 
 
   const fetchUserModel = async () => {
     try {
@@ -37,11 +37,15 @@ function ProductCard({ product }) {
       setCurrentUser(response.data.foundUser);
 
       if (user) {
+        if (response.data.foundUser.shoppingCart.length >= 1) {
+          response.data.foundUser.shoppingCart.map((cart) => {
+            return cart._id === product._id ? setCartClick(true) : null;
+          });
+        }
         if (response.data.foundUser.wishlist.length >= 1) {
           response.data.foundUser.wishlist.map((wish) => {
             return wish === product._id ? setClick(true) : null;
           });
-          
         }
       }
     } catch (error) {
@@ -71,23 +75,23 @@ function ProductCard({ product }) {
 
     const userId = user._id;
     const productId = product._id;
-    
+
     const productToCart = product;
-    productToCart.amount=count;
+    productToCart.amount = count;
     // const amount = 1;
-console.log("added to cart", productToCart);
+    console.log("added to cart", productToCart);
     if (!cartClick) {
       isLoggedIn ? (
-        
-
         axios
           .put(
-            `${server}/cart/${userId}/cart/${productId}/${count}`,productToCart
+            `${server}/cart/${userId}/cart/${productId}/${count}`,
+            productToCart
             // ,{
             //   headers: { authorization: Bearer ${gotToken} },
             // }
           )
           .then(setCartClick(!cartClick))
+          // .then(setPopupOpen(!popupOpen))
           .catch(function (error) {
             console.log("error while trying to post cart", error);
           })
@@ -183,27 +187,25 @@ console.log("added to cart", productToCart);
 
         {/* Side Option */}
         <div>
-
-          {user ?(
-          click ? (
-            
-            <AiFillHeart
-              size={22}
-              className="cursor-pointer absolute right-1 top-5"
-              onClick={handleWishlist}
-              color={click ? "red" : "black"}
-              title="Remove from wishlist"
-            />
-          ) : (
-            <AiOutlineHeart
-              size={22}
-              className="cursor-pointer absolute right-1 top-5"
-              onClick={handleWishlist}
-              color={click ? "red" : "black"}
-              title="Add to wishlist"
-            />
-          )) : null
-          }
+          {user ? (
+            click ? (
+              <AiFillHeart
+                size={22}
+                className="cursor-pointer absolute right-1 top-5"
+                onClick={handleWishlist}
+                color={click ? "red" : "black"}
+                title="Remove from wishlist"
+              />
+            ) : (
+              <AiOutlineHeart
+                size={22}
+                className="cursor-pointer absolute right-1 top-5"
+                onClick={handleWishlist}
+                color={click ? "red" : "black"}
+                title="Add to wishlist"
+              />
+            )
+          ) : null}
 
           <AiOutlineEye
             size={22}
@@ -212,17 +214,15 @@ console.log("added to cart", productToCart);
             color="black"
             title="Quick View"
           />
-          {user?
-
-          <AiOutlineShoppingCart
-            size={25}
-            className="cursor-pointer absolute right-1 top-24"
-            onClick={handleCart}
-            color={cartClick ? "red" : "black"}
-            title="Add to cart"
-          />
-          :null
-          }
+          {user ? (
+            <AiOutlineShoppingCart
+              size={25}
+              className="cursor-pointer absolute right-1 top-24"
+              onClick={handleCart}
+              color={cartClick ? "red" : "black"}
+              title="Add to cart"
+            />
+          ) : null}
 
           {open ? (
             <ProductDetailsCard
@@ -235,7 +235,6 @@ console.log("added to cart", productToCart);
               handleCart={handleCart}
               count={count}
               setCount={setCount}
-              
             />
           ) : null}
         </div>
