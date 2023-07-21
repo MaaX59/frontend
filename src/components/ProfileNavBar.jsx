@@ -101,7 +101,18 @@ function ProfileNavBar({ handleFilterByCategory }) {
     
   }
   wishlistLength(user)
-
+  const cartLength = async (user)=>{
+    try{
+      const response = await axios.get(`${server}/user/getuser/${user._id}`)
+    
+    const length = response.data.foundUser.shoppingCart.length;
+     setCartCount(length);
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
+  cartLength(user)
   
 
   const handleDropdownToggle = () => {

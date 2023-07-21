@@ -79,7 +79,7 @@ function ProductCard({ product }) {
     const productToCart = product;
     productToCart.amount = count;
     // const amount = 1;
-    console.log("added to cart", productToCart);
+    
     if (!cartClick) {
       isLoggedIn ? (
         axios

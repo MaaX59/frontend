@@ -79,6 +79,7 @@ return Math.round(sum);
                   <h3>{cartItem.price}$</h3>
                   <h3>Quantity:{cartItem.amount}</h3>
                   <h3>{cartItem.price*cartItem.amount}$</h3>
+                  <button  className="bg-[#c02424] ml-1 ">Remove item</button>
                   </div></div>
                 
               )}
