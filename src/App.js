@@ -13,9 +13,10 @@ import ProfilePage from "./components/ProfilePage";
 import PrivatePage from "./components/PrivatePage";
 import SellerDashboard from "./components/SellerDashboard";
 import UpdateProduct from "./components/Product/UpdateProducts";
-import UserSettings from "./components/UserSettings";
+//import UserSettings from "./components/UserSettings";
 import ShoppingCart from "./components/ShoppingCart";
 import ShippingInfo from "./components/ShippingInfo";
+import UserSettingsPage from "./pages/UserSettingsPage";
 
 function App() {
   return (
@@ -42,7 +43,7 @@ function App() {
         />
 <Route path="/seller-dashboard" element={<PrivatePage><SellerDashboard/></PrivatePage>} />
 <Route path="/updateproduct/:productName" element={<PrivatePage><UpdateProduct/></PrivatePage>} />
-<Route path="/user-settings" element={<PrivatePage><UserSettings/></PrivatePage>} />
+<Route path="/user-settings" element={<PrivatePage><UserSettingsPage/></PrivatePage>} />
 <Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
 </Routes>
 </BrowserRouter>

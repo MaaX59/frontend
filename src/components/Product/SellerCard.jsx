@@ -14,6 +14,7 @@ function SellerCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+  
 
   
  
@@ -22,6 +23,9 @@ function SellerCard({ product }) {
 
   const productName = product.name;
 
+  const handleCardClick = () => {
+    setClick(true); 
+  };
  
 
 
@@ -68,9 +72,13 @@ function SellerCard({ product }) {
     }
   };
 
+  if (click) {
+    return null;
+  }
+
   return (
     <>
-      <div className="w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer">
+      <div className="w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer" onClick={handleCardClick}>
         <div className="flex justify-end"></div>
 
         <Link to={`/product/${productName}`}>
@@ -113,10 +121,10 @@ function SellerCard({ product }) {
             size={25}
             className="cursor-pointer absolute right-1 top-24"
             color="#444"
-            onClick={() => DeleteProduct()}
+            onClick={() => DeleteProduct(product._id)}
             title="Delete Product"
           />
-            <Link to={`/updateproduct/${productName}`}>
+            <Link to={{pathname:`/updateproduct/${productName}`, state:product}}>
           <FaEdit size={25} className="cursor-pointer absolute right-1 top-25" color="#444" title="Update" />
         </Link>
           {showUpdateProduct && <UpdateProduct/>}
@@ -130,6 +138,7 @@ function SellerCard({ product }) {
           ) : null}
         </div>
       </div>
+      
     </>
   );
 }
