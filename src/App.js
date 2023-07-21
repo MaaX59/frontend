@@ -15,6 +15,7 @@ import SellerDashboard from "./components/SellerDashboard";
 import UpdateProduct from "./components/Product/UpdateProducts";
 import UserSettings from "./components/UserSettings";
 import ShoppingCart from "./components/ShoppingCart";
+import ShippingInfo from "./components/ShippingInfo";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={ <SignupPage /> } />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/shipping-info" element={<ShippingInfo/>} />
 
         <Route
           path="/profile"

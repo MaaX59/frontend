@@ -1,5 +1,6 @@
 import { React, useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { server } from "../server";
 import { AuthContext } from "../context/auth.context";
 import ProfileNavBar from './ProfileNavBar'
@@ -8,6 +9,7 @@ import ProfileNavBar from './ProfileNavBar'
 function ShoppingCart() {
     const { user } = useContext(AuthContext);
     const [cart, setCart] = useState([]);
+    const [reload, setReload] = useState(false);
 //     const [products, setProducts] = useState([]);
 const userId = user._id;
 
@@ -55,9 +57,10 @@ return Math.round(sum);
 
   const removeItem = ( productId ) => {
     return function () {
+      setReload(!reload);
        axios
         .delete(`${server}/cart/${userId}/cart/${productId}`)
-        
+        .then(setReload(!reload))
         
         .catch(function (error) {
           console.log("error while trying to post cart", error);
@@ -101,7 +104,13 @@ return Math.round(sum);
                 
               )}
         
-           <h1 className="flex">Total price {findTotal()} $</h1>
+           <h1 className="flex mt-3">Total price {findTotal()} $</h1>
+           <div>
+            <Link to="/shipping-info" state={[cart]} className="flex w-[190px] px-4 py-2 mt-5 bg-blue-500 text-white rounded-lg">
+              Continue to shipping
+
+            </Link>
+           </div>
             </div>
             
         </div>
