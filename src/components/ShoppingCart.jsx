@@ -9,6 +9,7 @@ function ShoppingCart() {
     const { user } = useContext(AuthContext);
     const [cart, setCart] = useState([]);
 //     const [products, setProducts] = useState([]);
+const userId = user._id;
 
   
 
@@ -52,6 +53,19 @@ return Math.round(sum);
     
   },[]);
 
+  const removeItem = ( productId ) => {
+    return function () {
+       axios
+        .delete(`${server}/cart/${userId}/cart/${productId}`)
+        
+        
+        .catch(function (error) {
+          console.log("error while trying to post cart", error);
+        });
+    }
+   
+
+  }
  
 
   return (
@@ -79,8 +93,11 @@ return Math.round(sum);
                   <h3>{cartItem.price}$</h3>
                   <h3>Quantity:{cartItem.amount}</h3>
                   <h3>{cartItem.price*cartItem.amount}$</h3>
-                  <button  className="bg-[#c02424] ml-1 ">Remove item</button>
-                  </div></div>
+                  <button onClick={ removeItem(cartItem._id)}
+
+                   className="bg-[#c02424] m-1 ">Remove item</button>
+                  </div>
+                  </div>
                 
               )}
         
