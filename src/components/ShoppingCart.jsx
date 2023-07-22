@@ -106,8 +106,8 @@ return Math.round(sum);
         
            <h1 className="flex mt-3">Total price {findTotal()} $</h1>
            <div>
-            <Link to="/shipping-info" state={[cart]} className="flex w-[190px] px-4 py-2 mt-5 bg-blue-500 text-white rounded-lg">
-              Continue to shipping
+            <Link to="/shipping-info"  className="flex w-[290px] px-4 py-2 mt-5 bg-blue-500 text-white rounded-lg text-center">
+              Confirm and continue to shipping
 
             </Link>
            </div>
