@@ -15,6 +15,8 @@ import SellerDashboard from "./components/SellerDashboard";
 import UpdateProduct from "./components/Product/UpdateProducts";
 import UserSettings from "./components/UserSettings";
 import ShoppingCart from "./components/ShoppingCart";
+import PayButton from "./components/Payments/PayButton";
+import CheckoutSuccess from "./components/Payments/CheckoutSuccess";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={ <SignupPage /> } />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/checkout-success" element={<CheckoutSuccess />} />
+        <Route path="/create-checkout-session" element={<PayButton />} />
 
         <Route
           path="/profile"
