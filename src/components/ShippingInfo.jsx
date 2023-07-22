@@ -2,7 +2,7 @@ import React , {useState}from "react";
 import ProfileNavBar from "./ProfileNavBar";
 import FetchUser from "./FetchUser";
 
-function ShippingInfo({findTotal}) {
+function ShippingInfo() {
   const user = FetchUser();
 
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ function ShippingInfo({findTotal}) {
   const [country, setCountry] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phonenumber, setPhonenumber] = useState("")
-  console.log(findTotal)
+  
 
   const handleSubmit = ()=>{
 

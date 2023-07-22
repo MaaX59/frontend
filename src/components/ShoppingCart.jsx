@@ -10,7 +10,7 @@ function ShoppingCart() {
   const [cart, setCart] = useState([]);
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
-  //     const [products, setProducts] = useState([]);
+  const [total, setTotal] = useState();
   const userId = user._id;
 
   //   const fetchProducts = async () => {
@@ -42,11 +42,12 @@ function ShoppingCart() {
     cart.map((item) => {
       sum = sum + item.price * item.amount;
     });
-    return Math.round(sum);
+    return Math.round(sum) ;
   };
 
   useEffect(() => {
     fetchUserAndCart();
+    
   }, []);
 
   const removeItem = (productId) => {
@@ -67,9 +68,16 @@ function ShoppingCart() {
     // const cartDataToDb = [userId, cart];
     console.log("cart on frontend",cart)
 
+    let cartToDb = cart.reduce((acc, {_id, price, amount, name, seller}) =>
+{
+     acc.push({_id, price, amount, name, seller});
+    return acc;
+}, []);
+
+console.log(cartToDb)
     try {
-      await axios.post(`${server}/cart/${userId}/shoppingcart`, cart);
-      navigate("/shipping-info");
+      await axios.post(`${server}/cart/${user._id}/shoppingcart`, cartToDb)
+      .then (navigate("/shipping-info"));
     } catch (error) {
       console.log("error while sending cart to db", error);
     }
