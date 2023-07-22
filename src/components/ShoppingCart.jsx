@@ -3,6 +3,7 @@ import axios from "axios";
 import { server } from "../server";
 import { AuthContext } from "../context/auth.context";
 import ProfileNavBar from './ProfileNavBar'
+import PayButton from "./Payments/PayButton";
 
 
 function ShoppingCart() {
@@ -84,6 +85,7 @@ return Math.round(sum);
               )}
         
            <h1 className="flex">Total price {findTotal()} $</h1>
+           <PayButton cartItem = {cart.cartItem}/>
             </div>
             
         </div>
