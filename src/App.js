@@ -17,6 +17,7 @@ import UpdateProduct from "./components/Product/UpdateProducts";
 import ShoppingCart from "./components/ShoppingCart";
 import ShippingInfo from "./components/ShippingInfo";
 import UserSettingsPage from "./pages/UserSettingsPage";
+import EditUser from "./components/EditUser"
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
 <Route path="/updateproduct/:productName" element={<PrivatePage><UpdateProduct/></PrivatePage>} />
 <Route path="/user-settings" element={<PrivatePage><UserSettingsPage/></PrivatePage>} />
 <Route path="/create-product" element={<PrivatePage><CreateProductPage /></PrivatePage>} />
-</Routes>
+<Route path="/edit-form" element={<PrivatePage><EditUser/></PrivatePage>} /></Routes>
 </BrowserRouter>
   );
 }

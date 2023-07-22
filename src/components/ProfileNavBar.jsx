@@ -71,7 +71,7 @@ const categories = [
   },
 ];
 
-function ProfileNavBar({ handleFilterByCategory }) {
+function ProfileNavBar({ userEmail, handleFilterByCategory }) {
   const { user ,logOutUser } = useContext(AuthContext);
 
   //console.log("user",user);
