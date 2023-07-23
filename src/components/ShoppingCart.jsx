@@ -10,7 +10,6 @@ function ShoppingCart() {
   const [cart, setCart] = useState([]);
   const [reload, setReload] = useState(false);
   const navigate = useNavigate();
-  const [total, setTotal] = useState();
   const userId = user._id;
 
   //   const fetchProducts = async () => {

@@ -1,10 +1,14 @@
-import React , {useState}from "react";
+import React , {useState, useContext}from "react";
 import ProfileNavBar from "./ProfileNavBar";
 import FetchUser from "./FetchUser";
+import axios from "axios";
+import { server } from "../server";
+
 
 function ShippingInfo() {
-  const user = FetchUser();
-
+  
+  
+const user = FetchUser();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -13,7 +17,27 @@ function ShippingInfo() {
   const [phonenumber, setPhonenumber] = useState("")
   
 
-  const handleSubmit = ()=>{
+  const handleSubmit = async (e)=>{
+    e.preventDefault();
+    try {
+      const shippingInfo = {
+        name:name, 
+        address:address,
+        country:country,
+        city:city,
+        phoneNo:phonenumber,
+        postalCode: postcode,
+
+      }
+      console.log("shipping info from frontend", shippingInfo)
+      const userId = user._id
+      const sendShippingInfo = await axios.put(`${server}/cart/${userId}/shippinginfo`,shippingInfo )
+      
+    } catch (error) {
+      console.log("error while updating shipping info on frontend", error)
+      
+    }
+
 
   }
 
