@@ -1,96 +1,96 @@
-import React, {useState, useEffect} from 'react'
-import ProfileNavBar from '../ProfileNavBar'
+import React, { useState, useEffect, useContext } from 'react';
+import ProfileNavBar from '../ProfileNavBar';
 import axios from 'axios';
 import { server } from '../../server';
+import { AuthContext } from '../../context/auth.context';
 
-function Negotiate({productId}) {
+function Negotiate({ productId }) {
+  const { user } = useContext(AuthContext);
 
-    const [demandingPrice, setDemandingPrice] = useState('');
-    const [createdProducts, setCreatedProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [error, setError] = useState('');
-    
-    useEffect(() => {
-        // Fetch the created products from the backend
-        const fetchCreatedProducts = async () => {
-          try {
-            const gotToken = localStorage.getItem('authToken');
-            const response = await axios.get(`${server}/product/created`, {
-              headers: { authorization: `Bearer ${gotToken}` },
-            });
-            setCreatedProducts(response.data.products);
-          } catch (error) {
-            console.error('Error while fetching created products:', error);
-          }
-        };
-    
-        fetchCreatedProducts();
-      }, []);
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        if (!selectedProduct) {
-          console.error('Please select a product to negotiate.');
-          return;
-        }
+  const [demandingPrice, setDemandingPrice] = useState('');
+  const [createdProducts, setCreatedProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [error, setError] = useState('');
+  const [isUserProduct, setIsUserProduct] = useState(false);
 
-        const enteredPrice = parseFloat(demandingPrice);
-        console.log('Entered price:', enteredPrice);
-        console.log('Selected product price:', selectedProduct.price);
+  useEffect(() => {
+    // Fetch the created products from the backend
+    const fetchCreatedProducts = async () => {
+      try {
+        const gotToken = localStorage.getItem('authToken');
+        const response = await axios.get(`${server}/product/created`, {
+          headers: { authorization: `Bearer ${gotToken}` },
+        });
 
-        if (enteredPrice > selectedProduct.price) {
-            setError('Please enter a demanding price less than the original price.');
-          console.error('Entered demanding price cannot be greater than the price of the product.');
-          return;
-        }
-    
+        const allProducts = response.data.products;
+        // Filter products to differentiate between user's products and other users' products
+           const userProducts = allProducts.filter(
+      (product) => product.seller === user._id && product.negotiable
+    );
 
-        const data = {
-            productId: selectedProduct._id,
-            negotiationPrice: parseFloat(demandingPrice),
-          };
-          
-        console.log("negotiationPrice",data)
-        try {
-          const gotToken = localStorage.getItem('authToken');
-          const response = await axios.post(`${server}/product/negotiate`, data, {
-            headers: { authorization: `Bearer ${gotToken}` },
-          });
-          console.log(response.data);
-          setDemandingPrice('');
-          setSelectedProduct(null); 
-          setError('');
-        } catch (error) {
-          console.error('Error while negotiating:', error);
-        }
-      };
+    const otherUserProducts = allProducts.filter(
+      (product) => product.seller !== user._id && product.negotiable
+    );
 
-    
+    setIsUserProduct(userProducts.length > 0);
+    setCreatedProducts(isUserProduct ? userProducts : otherUserProducts);
+      } catch (error) {
+        console.error('Error while fetching created products:', error);
+      }
+    };
 
+    fetchCreatedProducts();
+  }, [user._id, isUserProduct]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedProduct) {
+      setError('Please select a product to negotiate.');
+      return;
+    }
+
+    const enteredPrice = parseFloat(demandingPrice);
+    console.log('Entered price:', enteredPrice);
+    console.log('Selected product price:', selectedProduct.price);
+
+    if (enteredPrice > selectedProduct.price) {
+      setError('Please enter a demanding price less than the original price.');
+      console.error('Entered demanding price cannot be greater than the price of the product.');
+      return;
+    }
+
+    const data = {
+      productId: selectedProduct._id,
+      negotiationPrice: parseFloat(demandingPrice),
+    };
+
+    console.log('negotiationPrice', data);
+    try {
+      const gotToken = localStorage.getItem('authToken');
+      const response = await axios.post(`${server}/product/negotiate`, data, {
+        headers: { authorization: `Bearer ${gotToken}` },
+      });
+      console.log(response.data);
+      setDemandingPrice('');
+      setSelectedProduct(null);
+      setError('');
+    } catch (error) {
+      console.error('Error while negotiating:', error);
+    }
+  };
 
   return (
     <div>
       <ProfileNavBar />
-      <div
-        className="flex justify-center items-center h-screen"
-        style={{ background: "#f0f0f0" }} 
-      >
-        <div
-          className="bg-white p-6 rounded-lg shadow-lg"
-          style={{ maxWidth: "400px" }} 
-        >
-          <h2 className="text-2xl font-semibold text-center mb-4">
-            Enter Demanding Price
-          </h2>
+      <div className="flex justify-center items-center h-screen" style={{ background: '#f0f0f0' }}>
+        <div className="bg-white p-6 rounded-lg shadow-lg" style={{ maxWidth: '400px' }}>
+          <h2 className="text-2xl font-semibold text-center mb-4">Enter Demanding Price</h2>
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-         
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="demandingPrice"
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="demandingPrice">
                 Demanding Price:
               </label>
               <input
@@ -100,7 +100,7 @@ function Negotiate({productId}) {
                 className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter the demanding price"
                 value={demandingPrice}
-  onChange={(e) => setDemandingPrice(e.target.value)}
+                onChange={(e) => setDemandingPrice(e.target.value)}
               />
             </div>
             <div className="mb-4">
@@ -135,11 +135,10 @@ function Negotiate({productId}) {
               </button>
             </div>
           </form>
-        
         </div>
       </div>
     </div>
   );
 }
 
-export default Negotiate
+export default Negotiate;

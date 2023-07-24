@@ -12,15 +12,17 @@ import Negotiate from "./Negotiate.jsx";
 import UpdateProduct from './UpdateProducts.jsx';
 
 function SellerCard({ product }) {
+  const { user } = useContext(AuthContext);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+  const isOwnProduct = product.seller === user._id;
   
 
   
  
 
-  const { user } = useContext(AuthContext);
+  
 
   const productName = product.name;
 
@@ -148,7 +150,7 @@ function SellerCard({ product }) {
           ) : null}
         </div>
       </div>
-      {open && <Negotiate productId={product._id} />}
+      {!isOwnProduct && open && <Negotiate productId={product._id} />}
     </>
   );
 }
