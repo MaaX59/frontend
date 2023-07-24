@@ -12,28 +12,28 @@ function Negotiate({ productId }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState('');
   const [isUserProduct, setIsUserProduct] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     // Fetch the created products from the backend
     const fetchCreatedProducts = async () => {
       try {
-        const gotToken = localStorage.getItem('authToken');
-        const response = await axios.get(`${server}/product/created`, {
-          headers: { authorization: `Bearer ${gotToken}` },
-        });
-
-        const allProducts = response.data.products;
-        // Filter products to differentiate between user's products and other users' products
+        const response = await axios.get(`${server}/product/allproducts`);
+        const allProducts = response.data.productsFromDb;
+        console.log("all products", allProducts);
+        
            const userProducts = allProducts.filter(
       (product) => product.seller === user._id && product.negotiable
     );
+    console.log("userProducts",userProducts );
 
     const otherUserProducts = allProducts.filter(
       (product) => product.seller !== user._id && product.negotiable
     );
+    console.log("otherUserProducts",otherUserProducts);
 
     setIsUserProduct(userProducts.length > 0);
-    setCreatedProducts(isUserProduct ? userProducts : otherUserProducts);
+    setCreatedProducts(isUserProduct ? otherUserProducts: userProducts );
       } catch (error) {
         console.error('Error while fetching created products:', error);
       }
@@ -72,6 +72,7 @@ function Negotiate({ productId }) {
         headers: { authorization: `Bearer ${gotToken}` },
       });
       console.log(response.data);
+      setSuccessMessage('Product demanded successfully!');
       setDemandingPrice('');
       setSelectedProduct(null);
       setError('');
