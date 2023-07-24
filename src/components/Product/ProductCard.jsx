@@ -7,6 +7,8 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
+import { FaDollarSign } from "react-icons/fa";
+
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
 import { AuthContext } from "../../context/auth.context.jsx";
@@ -147,8 +149,7 @@ function ProductCard({ product }) {
 
         <Link to={`/product/${productName}`}>
           <img
-            // src={product.images[0].image}
-            //src={`${server}${product.images && product.images[0]}`}
+          
             src={
               product.images
                 ? product.images[0]
@@ -174,15 +175,17 @@ function ProductCard({ product }) {
             <Ratings num={product.ratings} />{" "}
           </div>
           <div className="py2 flex items-center justify-between">
-            <div className="flex">
-              <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
-                {product.price} $
-              </h5>
-            </div>
-            {/* <span className="font-[400] text-[17px] text-[#68d284]">
-              {product.sold == null ? "0 sold yet" : `${product.sold}, sold`}
-            </span> */}
-          </div>
+  <div className="flex">
+    {product.negotiable && (
+      <Link to={`/negotiate`}>
+        <FaDollarSign size={16} className="mr-1 cursor-pointer  text-green-500" />
+      </Link>
+    )}
+    <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
+    ${product.price}
+    </h5>
+  </div>
+</div>
         </Link>
 
         {/* Side Option */}

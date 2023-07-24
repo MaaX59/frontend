@@ -3,7 +3,7 @@ import axios from "axios";
 import { server } from "../../server.js";
 //import ProductCard from "./ProductCard.jsx";
 import SellerCard from "./SellerCard.jsx";
-import UpdateProduct from "./UpdateProducts.jsx";
+
 //import SearchProduct from "../SearchProduct.jsx";
 //import ProfileNavBar from "../ProfileNavBar.jsx";
 

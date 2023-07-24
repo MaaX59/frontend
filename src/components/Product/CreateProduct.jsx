@@ -15,6 +15,8 @@ const CreateProduct = () => {
   const [seller, setSeller] = useState("");
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
+  const [negotiationPrice, setNegotiationPrice] = useState(false);
+
   // const [ratings, setRatings] = useState("");
   // const [numberOfReviews, setNumberOfReviews] = useState("");
   // const [review, setReview] = useState([]);
@@ -51,6 +53,7 @@ const CreateProduct = () => {
     uploadData.append("name", name);
     uploadData.append("description", description);
     uploadData.append("price", price);
+    uploadData.append("negotiable", negotiationPrice);
     uploadData.append("category", category);
     uploadData.append("seller", user._id);
     uploadData.append("stock", stock);
@@ -74,6 +77,7 @@ const CreateProduct = () => {
     setImageUrl("");
     setSeller("");
     setStock(0);
+    setNegotiationPrice(false)
 
    
   };
@@ -84,6 +88,7 @@ return (
   <div className="flex flex-col justify-center items-center h-screen">
   <div className="w-full max-w-md mt-16">
     <h2 className="text-2xl font-semibold text-center mb-4">Create Product</h2>
+    <div className="px-4"></div>
     <form onSubmit={handleSubmit}>
         <br />
         <div>
@@ -156,6 +161,16 @@ return (
         </div>
         <br />
         <div>
+  <label className="pb-2">Negotiation Price</label>
+  <input
+    type="checkbox"
+    name="negotiationPrice"
+    checked={negotiationPrice}
+    className="mt-2 form-checkbox h-5 w-5 text-blue-600"
+    onChange={(e) => setNegotiationPrice(e.target.checked)}
+  />
+</div>
+        <div>
           <label className="pb-2">
             Amount<span className="text-red-500"></span>
           </label>
@@ -209,6 +224,7 @@ return (
         </div>
        
       </form>
+      <div/>
     
      
     </div>

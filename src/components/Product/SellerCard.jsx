@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect, useCallback} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit,FaDollarSign  } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
 import { AuthContext } from "../../context/auth.context.jsx";
 import { server } from "../../server";
+import Negotiate from "./Negotiate.jsx";
 
 import UpdateProduct from './UpdateProducts.jsx';
 
@@ -109,9 +110,18 @@ function SellerCard({ product }) {
           </div>
           <div className="py2 flex items-center justify-between">
             <div className="flex">
-              <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
-                {product.price} $
-              </h5>
+            {product.negotiable ? (
+        <>
+          <FaDollarSign size={20} className="mr-1 text-green-500" />
+          <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
+            {product.price}
+          </h5>
+        </>
+      ) : (
+        <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
+          ${product.price}
+        </h5>
+      )}
             </div>
           </div>
         </Link>
@@ -138,7 +148,7 @@ function SellerCard({ product }) {
           ) : null}
         </div>
       </div>
-      
+      {open && <Negotiate productId={product._id} />}
     </>
   );
 }

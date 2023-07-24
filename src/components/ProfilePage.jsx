@@ -67,44 +67,7 @@ return (
 
      <ProfileNavBar />
      <SellerDashboard />
-       {/* <SearchProduct handleSearch={handleSearch} />
-      <div className="flex flex-wrap bg-gray-100">
-     
-      {
-  filteredProducts.length > 0 ? (
-    filteredProducts.map((product, index) => (
-      <ProductCard product={product} key={index} />
-    ))
-  ) : productsToDisplay.length > 0 ? (
-    productsToDisplay.map((product, index) => (
-      <ProductCard product={product} key={product._id} />
-    ))
-  ) : (
-    <div className="text-center mt-4">No products found</div>
-  )
-}
-
-      </div> */}
-      {/* <div className="flex justify-center mt-5 flex-row">
-        <Pagination
-          activePage={currentPage}
-          itemsCountPerPage={itemsPerPage}
-          totalItemsCount={filteredProducts.length > 0 ? filteredProducts.length : products.length}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-          itemClass="page-item"
-          linkClass="page-link"
-          innerClass="pagination"
-          activeClass="active"
-          activeLinkClass="font-bold"
-          itemClassLast="last"
-          itemClassNext="next"
-          itemClassPrev="prev"
-        />
-      </div>  */}
-
-     
-      <Footer/>
+    <Footer/>
   </div>
   );
 }

@@ -18,6 +18,7 @@ import ShoppingCart from "./components/ShoppingCart";
 import ShippingInfo from "./components/ShippingInfo";
 import UserSettingsPage from "./pages/UserSettingsPage";
 import EditUser from "./components/EditUser"
+import Negotiate from "./components/Product/Negotiate";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
         <Route path="/signup" element={ <SignupPage /> } />
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/shipping-info" element={<ShippingInfo/>} />
-
+        <Route path="/negotiate" element={<PrivatePage><Negotiate/></PrivatePage>} />
         <Route
           path="/profile"
           element={
