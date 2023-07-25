@@ -1,5 +1,5 @@
 import axios from "axios";
-import { server } from "../../server";
+import { server } from "../server";
  
 const api = axios.create({
   // make sure you use PORT = 5005 (the port where our server is running)
