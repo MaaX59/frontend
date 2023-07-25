@@ -1,8 +1,9 @@
 import axios from "axios";
+import { server } from "../../server";
  
 const api = axios.create({
   // make sure you use PORT = 5005 (the port where our server is running)
-  baseURL: "http://localhost:8000/user"
+  baseURL: `${server}/user`
   // withCredentials: true // => you might need this option if using cookies and sessions
 });
  

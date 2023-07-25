@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { server } from '../../server';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import service from "../../api/service";
 import ProfileNavBar from "../ProfileNavBar"
 
@@ -17,6 +17,8 @@ function UpdateProduct() {
   const [seller, setSeller] = useState("");
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
+  const location = useLocation();
+  console.log(location)
   
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [product, setProduct] = useState({
