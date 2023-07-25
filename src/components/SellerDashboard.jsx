@@ -25,6 +25,9 @@ function SellerDashboard() {
     <div className='mt-20 align-middle'>
    
     <div className="flex justify-center gap-4 mt-4">
+    <Link to="/seller/negotiations" className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+        Negotiations Received
+      </Link>
     <Link to="/create-product" className="px-4 py-2 bg-blue-500 text-white rounded-lg">
         Create Product
       </Link>
@@ -33,9 +36,8 @@ function SellerDashboard() {
       </button>
     
     </div>
-  
-  
-       {showProductCreated && <ProductCreated />}
+  {showProductCreated && <ProductCreated />}
+      
   </div>
   </div>
   
