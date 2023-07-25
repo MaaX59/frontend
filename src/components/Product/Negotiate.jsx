@@ -63,6 +63,7 @@ function Negotiate({ productId }) {
     const data = {
       productId: selectedProduct._id,
       negotiationPrice: parseFloat(demandingPrice),
+      _id: user._id,
     };
 
     console.log('negotiationPrice', data);
