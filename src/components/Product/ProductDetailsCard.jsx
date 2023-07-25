@@ -6,8 +6,6 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import Negotiate from "./Negotiate";
-
 
 function ProductDetailsCard({
   setOpen,
@@ -22,10 +20,7 @@ function ProductDetailsCard({
 }) {
   // const [count, setCount] = useState(1);
 
-  const { productId } = product;
   const [select, setSelect] = useState(false);
-  const [showNegotiate, setShowNegotiate] = useState(false);
-  const [negotiateProduct, setNegotiateProduct] = useState(null);
 
   const countDown = () => {
     if (count > 1) {
@@ -34,11 +29,6 @@ function ProductDetailsCard({
   };
   const countUp = () => {
     setCount(count + 1);
-  };
-
-  const handleNegotiateClick = (product) => {
-    setShowNegotiate(true);
-    setNegotiateProduct(product);
   };
 
   return (
@@ -142,16 +132,6 @@ function ProductDetailsCard({
           </div>
         </div>
       ) : null}
-      <div>
-      {showNegotiate && negotiateProduct ? (
-        <Negotiate product={product._id} />
-      ) : (
-        <ProductDetailsCard
-          productId={productId}
-          onNegotiateClick={handleNegotiateClick}
-        />
-      )}
-    </div>
     </div>
   );
 }
