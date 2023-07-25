@@ -22,12 +22,12 @@ function Negotiate({ productId }) {
         const allProducts = response.data.productsFromDb;
         console.log("all products", allProducts);
         
-           const userProducts = allProducts.filter(
+      const userProducts = allProducts.filter(
       (product) => product.seller === user._id && product.negotiable
     );
-    console.log("userProducts",userProducts );
+      console.log("userProducts",userProducts );
 
-    const otherUserProducts = allProducts.filter(
+      const otherUserProducts = allProducts.filter(
       (product) => product.seller !== user._id && product.negotiable
     );
     console.log("otherUserProducts",otherUserProducts);
