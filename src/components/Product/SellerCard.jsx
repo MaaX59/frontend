@@ -136,7 +136,7 @@ function SellerCard({ product }) {
             onClick={() => DeleteProduct(product._id)}
             title="Delete Product"
           />
-            <Link to={{pathname:`/updateproduct/${productName}`, state:product}}>
+            <Link to={{pathname:`/updateproduct/${product._id}`}}>
           <FaEdit size={25} className="cursor-pointer absolute right-1 top-25" color="#444" title="Update" />
         </Link>
           {showUpdateProduct && <UpdateProduct/>}
