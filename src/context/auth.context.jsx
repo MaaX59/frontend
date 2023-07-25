@@ -10,10 +10,18 @@ const AuthContextWrapper = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const updateUserEmail = (email) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      email,
+    }));
+  };
+
   const setToken = (token) => {
     localStorage.setItem("authToken", token);
     setTokenState(token);
   };
+
   const authenticateUser = async () => {
     const gotToken = localStorage.getItem("authToken");
     console.log("This is the token from the user function", gotToken);
@@ -52,16 +60,20 @@ const AuthContextWrapper = (props) => {
   useEffect(() => {
     authenticateUser();
   }, []);
+
   return (
     <AuthContext.Provider
       value={{
         setToken,
+        tokenState,
         authenticateUser,
         isLoading,
         isLoggedIn,
         setIsLoggedIn,
         user,
+        setUser,
         logOutUser,
+        updateUserEmail,
       }}
     >
       {props.children}

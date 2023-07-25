@@ -1,9 +1,13 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { AuthContext } from "../../context/auth.context";
+
+
+
+import serviceSignUpImage from "../../api/serviceSignUpImage";
 
 const Signup = ({ props }) => {
   const [email, setEmail] = useState("");
@@ -12,45 +16,55 @@ const Signup = ({ props }) => {
   const [avatar, setAvatar] = useState(null);
 
   const navigate = useNavigate();
-  const { setToken, authenticateUser, setIsLoggedIn } = useContext(AuthContext);
+  const { user, setUser, setToken, authenticateUser, setIsLoggedIn } =
+    useContext(AuthContext);
+  const [isExistingUser, setIsExistingUser] = useState(false);
 
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    console.log("pic",file);
-    setAvatar(file);
-    
+  const handleFileUpload = (e) => {
+    setAvatar(e.target.files[0]);
+   // console.log("Avatar value:", avatar);
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+   
+    console.log("Avatar value:", avatar);
+  }, [avatar]);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const newUser = {
-      email,
-      name,
-      password,
-      avatar,
-    };
-    console.log("new user",newUser);
-    
-    axios
-      .post(`${server}/user/signup`, newUser)
-      .then((res) => {
-        console.log(res,"<===")
+    const uploadData = new FormData();
+
+    // if (user && user.email === email) {
+    //   setIsExistingUser(true);
+    // } else {
+      uploadData.append("name", name);
+      uploadData.append("email", email);
+      uploadData.append("password", password);
+      uploadData.append("avatar", avatar);
+      try {
+        const res = await axios.post(`${server}/user/signup`, uploadData);
+        console.log(res, "<===");
         const actualToken = res.data.authToken;
+        setUser(res.data.payload)
         setToken(actualToken);
         authenticateUser();
         setIsLoggedIn(true);
         navigate("/profile");
-        
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          setIsExistingUser(true);
+        } else {
+          console.log('Error:', err);
+        }
+      }
+    // }
 
-    setEmail("");
     setName("");
+    setEmail("");
     setPassword("");
     setAvatar(null);
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -124,15 +138,15 @@ const Signup = ({ props }) => {
                     <RxAvatar className="h-8 w-8" />
                   )}
                 </span>
-                <label className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                  <span>Upload a file</span>
+                <label className=" flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                  <span></span>
                   <input
                     type="file"
                     name="avatar"
-                    id="file-input"
+                     id="file-input"
                     accept=".jpg,.jpeg,.png"
-                    onChange={handleFileInputChange}
-                    className="sr-only"
+                    onChange={handleFileUpload}
+                    //className="sr-only"
                   />
                 </label>
               </div>
@@ -145,6 +159,11 @@ const Signup = ({ props }) => {
                 Submit
               </button>
             </div>
+            {isExistingUser && <p>Email already exists! Please Sign In</p>}
+
+            {/* {passwordError && (
+      <p>Password should be at least 6 characters long and contain at least one number and one special character.</p>
+    )} */}
             <div className=" flex w-full">
               <h4> Already have an Account?</h4>
               <Link to="/login" className="text-blue-600 pl-2">

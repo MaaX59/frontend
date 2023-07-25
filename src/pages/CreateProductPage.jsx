@@ -1,11 +1,12 @@
 import React from "react";
 import CreateProduct from "../components/Product/CreateProduct.jsx";
-import Navbar from "../components/navbar.jsx"
+import ProfileNavBar from "../components/ProfileNavBar.jsx"
+;
 
 const CreateProductPage = () => {
   return (
     <div>
-      <Navbar/>
+      <ProfileNavBar/>
       <CreateProduct/>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 
 
+
 function SearchProduct({handleSearch}) {
     const [searchTerm, setSearchTerm] = useState("");
+  
     
 
     const handleChange = (event) => {
@@ -11,8 +13,11 @@ function SearchProduct({handleSearch}) {
         handleSearch(typed);
       };
 
+     
+
   return (
-    <div className="w-1/2 mx-auto mt-4 relative">
+    <div className="w-1/2 mx-auto mt-4  pt-16 relative">
+   
     <input
       type="text"
       placeholder="Search Product"

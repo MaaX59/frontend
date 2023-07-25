@@ -1,11 +1,11 @@
 import React from 'react'
 import Signup from "../components/Signup/Signup"
-import Navbar from "../components/navbar.jsx"
+import LogSigNavBar from '../components/LogSigNavBar'
 
 function SignupPage() {
   return (
     <div>
-      <Navbar />
+      <LogSigNavBar/>
       <Signup />
     </div>
   )

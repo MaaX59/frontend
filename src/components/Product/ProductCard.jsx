@@ -1,21 +1,165 @@
+<<<<<<< HEAD
 import  {React, useState, useContext } from "react";
+=======
+import React, { useState, useContext, useEffect } from "react";
+>>>>>>> PriyaCartv4
 import { Link } from "react-router-dom";
-import { server } from "../../server";
-import { AiFillHeart, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import axios from "axios";
+import {
+  AiFillHeart,
+  AiOutlineEye,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
+import { FaDollarSign } from "react-icons/fa";
+
 import ProductDetailsCard from "./ProductDetailsCard.jsx";
 import Ratings from "./Ratings";
+<<<<<<< HEAD
 import axios from "axios"
 import { AuthContext } from "../../context/auth.context";
+=======
+import { AuthContext } from "../../context/auth.context.jsx";
+import { server } from "../../server";
+// import PopupAfterPurchase from "./PopupAfterPurchase.jsx";
+// import GetUserWishlist from "../GetUserWishlist.jsx";
+>>>>>>> PriyaCartv4
 
 function ProductCard({ product }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+<<<<<<< HEAD
   
   const { user, setUser } = useContext(AuthContext);
 
 
   const productName = product.name;
  
+=======
+  const [cartClick, setCartClick] = useState(false);
+
+  const [count, setCount] = useState(1);
+  // const [popupOpen, setPopupOpen] = useState(false);
+
+  const [currentUser, setCurrentUser] = useState([]);
+  const { user } = useContext(AuthContext);
+  const { isLoading, isLoggedIn } = useContext(AuthContext);
+  useEffect(() => {
+    fetchUserModel();
+  }, []);
+
+  const fetchUserModel = async () => {
+    try {
+      // const currentUserEmail = user.email;
+      const response = await axios.get(`${server}/user/getuser/${user._id}`);
+
+      setCurrentUser(response.data.foundUser);
+
+      if (user) {
+        if (response.data.foundUser.shoppingCart.length >= 1) {
+          response.data.foundUser.shoppingCart.map((cart) => {
+            return cart._id === product._id ? setCartClick(true) : null;
+          });
+        }
+        if (response.data.foundUser.wishlist.length >= 1) {
+          response.data.foundUser.wishlist.map((wish) => {
+            return wish === product._id ? setClick(true) : null;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // const fetchUserModel = async () => {
+  //   try {
+  //     const currentUserEmail = user.email;
+  //     const response = await axios.get(`${server}/user/getuser/${user._id}`);
+  //     setCurrentUser(response.data.currentUser);
+
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
+  // const alreadyWishedItems = async ()=>{
+  //   console.log("===>",currentUser)
+  // }
+
+  const handleCart = () => {
+    // const gotToken = localStorage.getItem("authToken");
+    // const response = await axios.get(${server}/product/newproduct, {
+    //   headers: { authorization: Bearer ${gotToken} },
+    // });
+
+    const userId = user._id;
+    const productId = product._id;
+
+    const productToCart = product;
+    productToCart.amount = count;
+    // const amount = 1;
+    
+    if (!cartClick) {
+      isLoggedIn ? (
+        axios
+          .put(
+            `${server}/cart/${userId}/cart/${productId}/${count}`,
+            productToCart
+            // ,{
+            //   headers: { authorization: Bearer ${gotToken} },
+            // }
+          )
+          .then(setCartClick(!cartClick))
+          // .then(setPopupOpen(!popupOpen))
+          .catch(function (error) {
+            console.log("error while trying to post cart", error);
+          })
+      ) : (
+        <Link to="/login"></Link>
+      );
+    } else if (cartClick) {
+      axios
+        .delete(`${server}/cart/${userId}/cart/${productId}`)
+        .then(setCartClick(!cartClick))
+        .catch(function (error) {
+          console.log("error while trying to post cart", error);
+        });
+    }
+  };
+
+  const handleWishlist = () => {
+    // const gotToken = localStorage.getItem("authToken");
+    const userId = user._id;
+    const productId = product._id;
+
+    if (!click) {
+      isLoggedIn ? (
+        // console.log(userId,"added to wishlist", product._id)
+
+        axios
+          .post(`${server}/wishlist/${userId}/addWishlist/${productId}`)
+          .then(setClick(!click))
+          .catch(function (error) {
+            console.log("error while trying to post wishlist", error);
+          })
+      ) : (
+        <Link to="/login"></Link>
+      );
+    } else if (click) {
+      console.log("removed from wishlist");
+
+      axios
+        .delete(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
+        .then(setClick(!click))
+        .catch(function (error) {
+          console.log("error while trying to post wishlist", error);
+        });
+    }
+  };
+
+  const productName = product.name;
+
+>>>>>>> PriyaCartv4
   return (
     <>
       <div className=" w-[260px] h-[370px] bg-white rounded-lg shadow-sm p-3 m-3 relative cursor-pointer">
@@ -23,9 +167,12 @@ function ProductCard({ product }) {
 
         <Link to={`/product/${productName}`}>
           <img
-            // src={product.images[0].image}
-            //src={`${server}${product.images && product.images[0]}`}
-            src="https://www.leparisien.fr/resizer/fGXimQvLycC2XjTOb9nran3rDcU=/1248x782/filters:focal(1184x745:1194x755)/cloudfront-eu-central-1.images.arcpublishing.com/leparisien/NJE5TPKX7NDY3AL7MWIJJEXZOA.jpg"
+          
+            src={
+              product.images
+                ? product.images[0]
+                : "https://erp.netbizde.com/cdn/static/products/default.jpg"
+            }
             alt={productName}
             className="w-[220px] h-[170px] object-contain"
           />
@@ -41,30 +188,32 @@ function ProductCard({ product }) {
               ? productName.slice(0, 40) + "..."
               : productName}
           </h4>
-          <div className="flex"> <Ratings num={product.ratings} /> </div>
-          <div className="py2 flex items-center justify-between">
-            <div className="flex">
-              <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
-                {product.price} $
-              </h5>
-            </div>
-            <span className="font-[400] text-[17px] text-[#68d284]">
-              {product.sold==null ? "0 sold yet" : `${product.sold}, sold`}
-                
-              
-              
-
-            </span>
+          <div className="flex">
+            {" "}
+            <Ratings num={product.ratings} />{" "}
           </div>
-          </Link>
+          <div className="py2 flex items-center justify-between">
+  <div className="flex">
+    {product.negotiable && (
+      <Link to={`/negotiate`}>
+        <FaDollarSign size={16} className="mr-1 cursor-pointer  text-green-500" />
+      </Link>
+    )}
+    <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
+    ${product.price}
+    </h5>
+  </div>
+</div>
+        </Link>
 
-          {/* Side Option */}
-          <div>
-            {click ? (
+        {/* Side Option */}
+        <div>
+          {user ? (
+            click ? (
               <AiFillHeart
                 size={22}
                 className="cursor-pointer absolute right-1 top-5"
-                onClick={() => setClick(!click)}
+                onClick={handleWishlist}
                 color={click ? "red" : "black"}
                 title="Remove from wishlist"
               />
@@ -72,32 +221,44 @@ function ProductCard({ product }) {
               <AiOutlineHeart
                 size={22}
                 className="cursor-pointer absolute right-1 top-5"
-                onClick={() => setClick(!click)}
+                onClick={handleWishlist}
                 color={click ? "red" : "black"}
                 title="Add to wishlist"
               />
-            )}
-            <AiOutlineEye
-                size={22}
-                className="cursor-pointer absolute right-1 top-14"
-                onClick={() => setOpen(!open)}
-                color="black"
-                title="Quick View"
-              />
-              <AiOutlineShoppingCart
-                size={25}
-                className="cursor-pointer absolute right-1 top-24"
-                onClick={() => setOpen(!open)}
-                color="#444"
-                title="Add to cart"
-              />
-              {
-                open ? (
-                <ProductDetailsCard setOpen={setOpen} product={product} />
-                ) : null
-              }
-          </div>
-        
+            )
+          ) : null}
+
+          <AiOutlineEye
+            size={22}
+            className="cursor-pointer absolute right-1 top-14"
+            onClick={() => setOpen(!open)}
+            color="black"
+            title="Quick View"
+          />
+          {user ? (
+            <AiOutlineShoppingCart
+              size={25}
+              className="cursor-pointer absolute right-1 top-24"
+              onClick={handleCart}
+              color={cartClick ? "red" : "black"}
+              title="Add to cart"
+            />
+          ) : null}
+
+          {open ? (
+            <ProductDetailsCard
+              handleWishlist={handleWishlist}
+              setOpen={setOpen}
+              product={product}
+              setClick={setClick}
+              click={click}
+              user={user}
+              handleCart={handleCart}
+              count={count}
+              setCount={setCount}
+            />
+          ) : null}
+        </div>
       </div>
     </>
   );
