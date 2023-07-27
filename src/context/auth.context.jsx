@@ -9,6 +9,7 @@ const AuthContextWrapper = (props) => {
   const [tokenState, setTokenState] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
 
   const updateUserEmail = (email) => {
     setUser((prevUser) => ({
@@ -21,6 +22,34 @@ const AuthContextWrapper = (props) => {
     localStorage.setItem("authToken", token);
     setTokenState(token);
   };
+
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+  const wishlistLength = async (user)=>{
+    try{
+      const response = await axios.get(`${server}/user/getuser/${user._id}`)
+    
+    const length = response.data.foundUser.wishlist.length;
+     setWishlistCount(length);
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
+  wishlistLength(user)
+  const cartLength = async (user)=>{
+    try{
+      const response = await axios.get(`${server}/user/getuser/${user._id}`)
+    
+    const length = response.data.foundUser.shoppingCart.length;
+     setCartCount(length);
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
+  cartLength(user)
 
   const authenticateUser = async () => {
     const gotToken = localStorage.getItem("authToken");
@@ -64,6 +93,8 @@ const AuthContextWrapper = (props) => {
   return (
     <AuthContext.Provider
       value={{
+        wishlist, 
+        setWishlist,
         setToken,
         tokenState,
         authenticateUser,
@@ -74,6 +105,12 @@ const AuthContextWrapper = (props) => {
         setUser,
         logOutUser,
         updateUserEmail,
+        cartCount, 
+        setCartCount,
+        wishlistCount,
+        setWishlistCount,
+        wishlistLength,
+        cartLength,
       }}
     >
       {props.children}

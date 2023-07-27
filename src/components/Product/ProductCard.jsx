@@ -25,8 +25,16 @@ function ProductCard({ product }) {
   // const [popupOpen, setPopupOpen] = useState(false);
 
   const [currentUser, setCurrentUser] = useState([]);
-  const { user } = useContext(AuthContext);
-  const { isLoading, isLoggedIn } = useContext(AuthContext);
+
+  const {
+    user,
+    isLoading,
+    isLoggedIn,
+    
+    wishlistLength,
+    cartLength,
+  } = useContext(AuthContext);
+
   useEffect(() => {
     fetchUserModel();
   }, []);
@@ -80,8 +88,8 @@ function ProductCard({ product }) {
 
     const productToCart = product;
     productToCart.amount = count;
-    // const amount = 1;
-    
+   
+
     if (!cartClick) {
       isLoggedIn ? (
         axios
@@ -92,8 +100,10 @@ function ProductCard({ product }) {
             //   headers: { authorization: Bearer ${gotToken} },
             // }
           )
-          .then(setCartClick(!cartClick))
-          // .then(setPopupOpen(!popupOpen))
+          .then(() => {
+            setCartClick(!cartClick);
+            cartLength(user);
+          })
           .catch(function (error) {
             console.log("error while trying to post cart", error);
           })
@@ -103,7 +113,10 @@ function ProductCard({ product }) {
     } else if (cartClick) {
       axios
         .delete(`${server}/cart/${userId}/cart/${productId}`)
-        .then(setCartClick(!cartClick))
+        .then(() => {
+          setCartClick(!cartClick);
+          cartLength(user);
+        })
         .catch(function (error) {
           console.log("error while trying to post cart", error);
         });
@@ -121,7 +134,11 @@ function ProductCard({ product }) {
 
         axios
           .post(`${server}/wishlist/${userId}/addWishlist/${productId}`)
-          .then(setClick(!click))
+          .then(() => {
+            setClick(!click);
+            wishlistLength(user);
+          })
+
           .catch(function (error) {
             console.log("error while trying to post wishlist", error);
           })
@@ -133,7 +150,10 @@ function ProductCard({ product }) {
 
       axios
         .delete(`${server}/wishlist/${userId}/removeWishlist/${productId}`)
-        .then(setClick(!click))
+        .then(() => {
+          setClick(!click);
+          wishlistLength(user);
+        })
         .catch(function (error) {
           console.log("error while trying to post wishlist", error);
         });
@@ -149,7 +169,6 @@ function ProductCard({ product }) {
 
         <Link to={`/product/${productName}`}>
           <img
-          
             src={
               product.images
                 ? product.images[0]
@@ -175,17 +194,20 @@ function ProductCard({ product }) {
             <Ratings num={product.ratings} />{" "}
           </div>
           <div className="py2 flex items-center justify-between">
-  <div className="flex">
-    {product.negotiable && (
-      <Link to={`/negotiate`}>
-        <FaDollarSign size={16} className="mr-1 cursor-pointer  text-green-500" />
-      </Link>
-    )}
-    <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
-    ${product.price}
-    </h5>
-  </div>
-</div>
+            <div className="flex">
+              {product.negotiable && (
+                <Link to={`/negotiate`}>
+                  <FaDollarSign
+                    size={16}
+                    className="mr-1 cursor-pointer  text-green-500"
+                  />
+                </Link>
+              )}
+              <h5 className="px-1 font-bold text-[18px] text-[#333] font-Roboto">
+                ${product.price}
+              </h5>
+            </div>
+          </div>
         </Link>
 
         {/* Side Option */}
