@@ -15,8 +15,7 @@ import {
   RiBikeLine,
   RiHomeLine,
 } from "react-icons/ri";
-import axios from "axios";
-import { server } from "../server";
+
 
 
 
@@ -84,36 +83,7 @@ function ProfileNavBar({ userEmail, handleFilterByCategory }) {
   // const [selectedLink, setSelectedLink] = useState("");
   const defaultImage = '/userImage.jpeg';
 
-  //console.log(user);
-  
-  // const [cartCount, setCartCount] = useState(0);
-  // const [wishlistCount, setWishlistCount] = useState(0);
-
-  // const wishlistLength = async (user)=>{
-  //   try{
-  //     const response = await axios.get(`${server}/user/getuser/${user._id}`)
-    
-  //   const length = response.data.foundUser.wishlist.length;
-  //    setWishlistCount(length);
-  //   }catch(error){
-  //     console.log(error)
-  //   }
-    
-  // }
-  // wishlistLength(user)
-  // const cartLength = async (user)=>{
-  //   try{
-  //     const response = await axios.get(`${server}/user/getuser/${user._id}`)
-    
-  //   const length = response.data.foundUser.shoppingCart.length;
-  //    setCartCount(length);
-  //   }catch(error){
-  //     console.log(error)
-  //   }
-    
-  // }
-  // cartLength(user)
-  
+ 
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -128,10 +98,6 @@ function ProfileNavBar({ userEmail, handleFilterByCategory }) {
       setDropdownOpen(false);
     }
   };
-
-  // const handleLinkClick = (link) => {
-  //   setSelectedLink(link);
-  // };
 
   const renderCategoryButtons = () => {
     return (

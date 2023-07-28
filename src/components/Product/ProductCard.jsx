@@ -26,14 +26,8 @@ function ProductCard({ product }) {
 
   const [currentUser, setCurrentUser] = useState([]);
 
-  const {
-    user,
-    isLoading,
-    isLoggedIn,
-    
-    wishlistLength,
-    cartLength,
-  } = useContext(AuthContext);
+  const { user, isLoading, isLoggedIn, wishlistLength, cartLength } =
+    useContext(AuthContext);
 
   useEffect(() => {
     fetchUserModel();
@@ -88,7 +82,6 @@ function ProductCard({ product }) {
 
     const productToCart = product;
     productToCart.amount = count;
-   
 
     if (!cartClick) {
       isLoggedIn ? (

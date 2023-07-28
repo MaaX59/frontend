@@ -6,24 +6,10 @@ import { AuthContext } from "../context/auth.context";
 import ProfileNavBar from "./ProfileNavBar";
 
 function ShoppingCart() {
-  const { user } = useContext(AuthContext);
+  const { user, cartLength } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
-  const [reload, setReload] = useState(false);
   const navigate = useNavigate();
   const userId = user._id;
-
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await axios.get(`${server}/product/allproducts`);
-  //       // setProducts(response.data.productsFromDb);
-  //       console.log("this is the all products", response.data);
-  //       console.log("products",response.data.productsFromDb)
-  //       setProducts(response.data.productsFromDb);
-
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
 
   const fetchUserAndCart = async () => {
     try {
@@ -41,46 +27,50 @@ function ShoppingCart() {
     cart.map((item) => {
       sum = sum + item.price * item.amount;
     });
-    return Math.round(sum) ;
+    return Math.round(sum);
   };
 
   useEffect(() => {
     fetchUserAndCart();
-    
   }, []);
 
-  const removeItem = (productId) => {
-    return function () {
-      setReload(!reload);
-      axios
+  const removeItem = async (productId) => {
+    try {
+      await axios
         .delete(`${server}/cart/${userId}/cart/${productId}`)
-        .then(setReload(!reload))
-
-        .catch(function (error) {
-          console.log("error while trying to post cart", error);
+        .then(() => {
+          cartLength(user);
+          fetchUserAndCart();
         });
-    };
+    } catch (error) {
+      console.log("error while trying to post cart", error);
+    }
   };
+
   const confirmCart = async () => {
     // e.preventDefault();
-    console.log("user id",userId)
+    console.log("user id", userId);
     // const cartDataToDb = [userId, cart];
-    console.log("cart on frontend",cart)
+    console.log("cart on frontend", cart);
 
-    let cartToDb = cart.reduce((acc, {_id, price, amount, name, seller}) =>
-{
-     acc.push({_id, price, amount, name, seller});
-    return acc;
-}, []);
+    let cartToDb = cart.reduce((acc, { _id, price, amount, name, seller }) => {
+      acc.push({ _id, price, amount, name, seller });
+      return acc;
+    }, []);
 
-console.log(cartToDb)
+    console.log(cartToDb);
     try {
-      await axios.post(`${server}/cart/${user._id}/shoppingcart`, cartToDb)
-      .then (navigate("/shipping-info"));
+      await axios
+        .post(`${server}/cart/${user._id}/shoppingcart`, cartToDb)
+        .then(navigate("/shipping-info"));
     } catch (error) {
       console.log("error while sending cart to db", error);
     }
   };
+
+
+
+
 
   return (
     <div>
@@ -102,12 +92,29 @@ console.log(cartToDb)
                 <h2 className="w-[300px] font-[600] font-Roboto text-[#333]">
                   {cartItem.name}
                 </h2>
-                <h3>{cartItem.price}$</h3>
-                <h3>Quantity:{cartItem.amount}</h3>
-                <h3>{cartItem.price * cartItem.amount}$</h3>
+                <h3>${cartItem.price}</h3>
+                <div className="flex"> 
+                <h3>Quantity:</h3>{cartItem.amount}
+                {/* <label>Quantity:</label>
+                <select value={value} onChange={handleChange(cartItem._id)}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                </select>
+               */}
+                </div>
+                <h3>${cartItem.price * cartItem.amount}</h3>
                 <button
-                  onClick={removeItem(cartItem._id)}
-                  className="bg-[#c02424] m-1 "
+                  onClick={() => {
+                    removeItem(cartItem._id);
+                  }}
+                  className="group relative w-[140px] h-[40px] flex justify-center rounded-md bg-blue-600 hover:bg-red-700  py-2 px-4 border border-transparent font-medium text-sm"
                 >
                   Remove item
                 </button>
@@ -115,7 +122,7 @@ console.log(cartToDb)
             </div>
           ))}
 
-          <h1 className="flex mt-3">Total price {findTotal()} $</h1>
+          <h1 className="flex flex-end mt-3">Total price ${findTotal()} </h1>
           <div>
             <button
               onClick={confirmCart}
